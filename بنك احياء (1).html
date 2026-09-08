@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no" />
+<title>Biology QBank</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg1:#0a0f1f;--bg2:#1a2639;--bg3:#2d3a4f;--primary:#4fc3f7;--primary-dark:#0288d1;--accent:#ffd54f;--danger:#ef5350;--success:#66bb6a;--text:#e2e8f0;--muted:#a0aec0;--radius:16px;--shadow:0 10px 30px rgba(0,0,0,0.4);--glow:0 0 25px rgba(79,195,247,0.12);--max-width:600px;--bg-card:rgba(255,255,255,0.06);--border-card:rgba(255,255,255,0.06)}
+body.light{--bg1:#f5f7fa;--bg2:#ffffff;--bg3:#e9edf2;--bg-card:#ffffff;--border-card:#d0d7e0;--text:#1a202c;--muted:#4a5568;--primary:#1565c0;--primary-dark:#0d47a1;--accent:#f9a825;--danger:#c62828;--success:#2e7d32;--shadow:0 2px 8px rgba(0,0,0,0.08);--glow:none;background:#f5f7fa!important}
+body{font-family:"Tahoma","Segoe UI","Cairo",sans-serif;background:var(--bg1);min-height:100vh;color:var(--text);display:flex;flex-direction:column;align-items:center;padding:12px 10px;transition:background .4s,color .3s}
+.app{width:100%;max-width:var(--max-width);position:relative;z-index:1}
+.top-header{text-align:center;padding:8px 0 4px}
+.top-header h1{font-size:1.8rem;font-weight:800;background:linear-gradient(135deg,var(--primary),var(--primary-dark));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+body.light .top-header h1{background:none;-webkit-background-clip:unset;-webkit-text-fill-color:unset;color:#000;text-shadow:none}
+.top-header .sub{font-size:.9rem;color:var(--primary);font-weight:600}
+.top-header .creator{font-size:.7rem;color:var(--muted);margin-top:4px}
+.top-header .creator .name{color:var(--text);font-weight:700}
+body.light .top-header .creator .name{color:#000}
+.theme-toggle-wrap{display:flex;justify-content:flex-end;margin-bottom:6px}
+.theme-toggle{display:flex;background:var(--bg-card);border:1px solid var(--border-card);border-radius:30px;padding:3px;gap:2px}
+.theme-toggle button{background:transparent;border:none;padding:4px 14px;border-radius:30px;font-size:.8rem;color:var(--muted);cursor:pointer;transition:.3s}
+.theme-toggle button.active{background:var(--primary);color:#fff;font-weight:700}
+body.light .theme-toggle button.active{background:#1565c0;color:#fff}
+.card{background:var(--bg-card);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid var(--border-card);border-radius:var(--radius);box-shadow:var(--shadow),var(--glow);padding:16px 14px;margin-bottom:14px;transition:transform .2s,background .3s,border .3s;color:var(--text)}
+body.light .card{background:#fff;border:1px solid #d0d7e0;backdrop-filter:none}
+.card-title{margin:0 0 12px;font-size:1rem;border-inline-start:3px solid var(--primary);padding-inline-start:10px;font-weight:600;display:flex;justify-content:space-between;align-items:center}
+.card-title i{color:var(--accent);margin-left:6px}
+.toggle-all-btn{background:rgba(79,195,247,0.12);border:1px solid var(--border-card);border-radius:20px;padding:3px 12px;font-size:.7rem;font-weight:600;color:var(--text);cursor:pointer;transition:.2s}
+body.light .toggle-all-btn{background:#e3f2fd;border-color:#bbdefb;color:#000}
+.toggle-all-btn:hover{background:var(--primary);color:#fff}
+body.light .toggle-all-btn:hover{background:#1565c0;color:#fff}
+.action-icons{display:flex;justify-content:space-around;gap:6px;flex-wrap:wrap}
+.action-icon{display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;padding:6px 14px;border-radius:12px;border:1.5px solid transparent;background:transparent;color:var(--muted);font-size:.7rem;font-weight:600;min-width:56px}
+.action-icon .icon{font-size:1.5rem}
+.action-icon .label{font-size:.55rem}
+.action-icon.active{border-color:var(--primary);background:rgba(79,195,247,0.08)}
+body.light .action-icon.active{border-color:#1565c0;background:#e3f2fd}
+.sub-options{display:none;padding:8px 10px;margin-top:6px;background:rgba(0,0,0,0.15);border-radius:12px;border:1px solid var(--border-card);flex-wrap:wrap;gap:6px;justify-content:center}
+body.light .sub-options{background:#f5f5f5;border-color:#ccc}
+.sub-options.show{display:flex}
+.sub-options .action-btn{border:1px solid var(--border-card);background:rgba(255,255,255,0.03);border-radius:12px;padding:5px 16px;font-size:.75rem;font-weight:600;color:var(--muted);cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:4px;white-space:nowrap}
+body.light .sub-options .action-btn{background:#fff;border-color:#ccc;color:#333}
+.sub-options .action-btn.active{border-color:var(--primary);background:rgba(79,195,247,0.12);color:var(--text)}
+body.light .sub-options .action-btn.active{border-color:#1565c0;background:#bbdefb;color:#000}
+.section-list{display:flex;flex-direction:column;gap:6px;max-height:280px;overflow-y:auto}
+.section-item{display:flex;align-items:center;justify-content:space-between;border:1px solid var(--border-card);border-radius:10px;padding:8px 12px;cursor:pointer;transition:all .15s;font-size:.85rem;color:var(--text)}
+body.light .section-item{border-color:#ccc}
+.section-item.active{border-color:var(--primary);background:rgba(79,195,247,0.08)}
+body.light .section-item.active{border-color:#1565c0;background:#e3f2fd}
+.section-item .cnt{background:rgba(255,255,255,0.06);border-radius:30px;padding:0 10px;font-size:.7rem;color:var(--muted);font-weight:700;min-width:30px;text-align:center}
+body.light .section-item .cnt{background:#ddd;color:#333}
+.section-item .info-btn{background:none;border:none;color:var(--muted);cursor:pointer;font-size:1rem;padding:0 4px}
+.section-item .info-btn:hover{color:var(--primary)}
+#section-explanation{margin-top:12px;padding:16px;background:rgba(0,0,0,0.15);border-radius:var(--radius);border:1px solid var(--border-card);display:none}
+body.light #section-explanation{background:#f5f5f5;border-color:#ccc}
+#section-explanation.show{display:block}
+.explain-header{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+.explain-controls{display:flex;gap:6px;align-items:center}
+.explain-controls .lang-btn{background:rgba(255,255,255,0.06);border:1px solid var(--border-card);color:var(--muted);padding:4px 10px;border-radius:20px;font-size:.7rem;cursor:pointer;font-weight:600}
+body.light .explain-controls .lang-btn{background:#fff;border-color:#ccc;color:#333}
+.explain-controls .lang-btn.active{border-color:var(--primary);background:rgba(79,195,247,0.12);color:var(--text)}
+body.light .explain-controls .lang-btn.active{border-color:#1565c0;background:#bbdefb;color:#000}
+.explain-controls .close-explain{background:none;border:none;color:var(--muted);font-size:1.2rem;cursor:pointer}
+.explain-controls .close-explain:hover{color:var(--danger)}
+#explain-text{font-size:.9rem;line-height:2;color:var(--text);background:rgba(0,0,0,0.1);padding:12px;border-radius:10px;min-height:60px;white-space:pre-wrap}
+body.light #explain-text{background:#fff;color:#000;border:1px solid #ccc}
+.big-btn{width:100%;padding:14px;border:none;border-radius:12px;background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:#fff;font-size:1rem;font-weight:700;cursor:pointer;box-shadow:0 6px 20px rgba(79,195,247,0.25);transition:all .15s;position:relative;overflow:hidden}
+body.light .big-btn{background:#1565c0;color:#fff;box-shadow:0 2px 8px rgba(21,101,192,0.3)}
+.big-btn.secondary{background:linear-gradient(135deg,#4a5568,#2d3748)}
+body.light .big-btn.secondary{background:#757575}
+.big-btn.warn{background:linear-gradient(135deg,var(--accent),#f57f17)}
+body.light .big-btn.warn{background:#f9a825;color:#000}
+.big-btn:disabled{opacity:.5;cursor:not-allowed}
+.stats-row{display:flex;justify-content:space-around;gap:8px;text-align:center;margin:6px 0}
+.stats-row .stat .num{font-size:1.4rem;font-weight:800;background:linear-gradient(135deg,var(--primary),#81d4fa);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+body.light .stats-row .stat .num{background:none;-webkit-background-clip:unset;-webkit-text-fill-color:unset;color:#000}
+.stats-row .stat .lbl{font-size:.7rem;color:var(--muted)}
+.progress-stats{display:flex;align-items:center;gap:16px}
+.progress-ring{position:relative;width:70px;height:70px;flex-shrink:0}
+.progress-ring svg{transform:rotate(-90deg);width:70px;height:70px}
+.progress-ring .bg{fill:none;stroke:var(--border-card);stroke-width:6}
+body.light .progress-ring .bg{stroke:#ccc}
+.progress-ring .fg{fill:none;stroke:var(--primary);stroke-width:6;stroke-linecap:round;stroke-dasharray:176;stroke-dashoffset:176;transition:stroke-dashoffset .6s}
+body.light .progress-ring .fg{stroke:#1565c0}
+.progress-ring .center-text{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:.9rem;font-weight:700;color:var(--text)}
+.weak-link{margin-top:10px;font-size:.75rem;color:var(--muted);cursor:pointer;display:flex;align-items:center;gap:6px}
+.weak-link i{color:var(--accent)}
+.action-row-bottom{display:flex;gap:8px;margin-top:10px}
+.action-row-bottom .big-btn{flex:1;font-size:.75rem;padding:8px;margin-top:0}
+#screen-quiz,#screen-results{display:none}
+#screen-quiz.active,#screen-results.active{display:block}
+.quiz-meta{display:flex;justify-content:space-between;align-items:center;font-size:.75rem;color:var(--muted);margin-bottom:8px}
+#timer-badge{font-weight:600;font-size:.8rem;background:rgba(255,255,255,0.05);padding:2px 12px;border-radius:30px;border:1px solid var(--border-card)}
+body.light #timer-badge{background:#f0f0f0;border-color:#ccc}
+#timer-badge.warn{background:rgba(255,213,79,0.15);border-color:var(--accent);color:var(--accent)}
+#timer-badge.danger{background:rgba(239,83,80,0.2);border-color:var(--danger);color:var(--danger);animation:pulse .7s infinite alternate}
+@keyframes pulse{0%{opacity:1}100%{opacity:.5}}
+.progress-wrap{background:rgba(255,255,255,0.06);border-radius:30px;height:4px;overflow:hidden;margin-bottom:12px}
+body.light .progress-wrap{background:#ddd}
+.progress-bar{height:100%;background:linear-gradient(90deg,var(--primary),var(--accent));width:0%;transition:width .3s}
+body.light .progress-bar{background:linear-gradient(90deg,#1565c0,#f9a825)}
+.q-header{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:4px}
+.q-tag{display:inline-block;background:rgba(79,195,247,0.10);color:var(--primary);font-size:.65rem;font-weight:700;padding:2px 12px;border-radius:30px;border:1px solid rgba(79,195,247,0.06);margin-bottom:8px}
+body.light .q-tag{background:#e3f2fd;color:#1565c0;border-color:#bbdefb}
+.q-en{font-size:1rem;font-weight:700;color:var(--text);margin-bottom:4px;line-height:1.6;direction:ltr;text-align:left;word-wrap:break-word}
+.q-ar{font-size:.9rem;color:var(--muted);margin-bottom:14px;line-height:1.7;direction:rtl;text-align:right;word-wrap:break-word}
+.options{display:flex;flex-direction:column;gap:8px}
+.option{display:flex;align-items:center;gap:8px;border:1px solid var(--border-card);border-radius:12px;padding:10px 14px;cursor:pointer;transition:all .15s;background:rgba(255,255,255,0.02);direction:ltr}
+body.light .option{background:#fff;border-color:#ccc}
+.option .opt-en{font-weight:600;color:var(--text);font-size:.9rem;flex:1;direction:ltr;text-align:left}
+.option .opt-ar{color:var(--muted);font-size:.8rem;direction:rtl;text-align:right;flex:1}
+.option .mark{font-size:1.1rem;width:24px;text-align:center;flex-shrink:0}
+.option.selected{border-color:var(--primary);background:rgba(79,195,247,0.06)}
+body.light .option.selected{border-color:#1565c0;background:#e3f2fd}
+.option.correct{border-color:var(--success);background:rgba(102,187,106,0.08)}
+body.light .option.correct{border-color:#2e7d32;background:#e8f5e9}
+.option.wrong{border-color:var(--danger);background:rgba(239,83,80,0.08)}
+body.light .option.wrong{border-color:#c62828;background:#ffebee}
+.option.disabled{cursor:default;opacity:.8}
+.feedback-box{margin-top:12px;padding:12px;border-radius:12px;font-size:.85rem;line-height:1.6}
+.feedback-box.correct{background:rgba(102,187,106,0.08);border:1px solid rgba(102,187,106,0.15);color:#a7f3d0}
+body.light .feedback-box.correct{background:#e8f5e9;border-color:#2e7d32;color:#000}
+.feedback-box.wrong{background:rgba(239,83,80,0.08);border:1px solid rgba(239,83,80,0.15);color:#fecaca}
+body.light .feedback-box.wrong{background:#ffebee;border-color:#c62828;color:#000}
+.feedback-box .fb-title{font-weight:700;margin-bottom:4px}
+.nav-row{display:flex;gap:8px;margin-top:12px}
+.nav-row .big-btn{flex:1;margin-top:0;font-size:.85rem;padding:10px}
+.score-circle{width:120px;height:120px;border-radius:50%;margin:8px auto 14px;display:flex;align-items:center;justify-content:center;flex-direction:column;background:conic-gradient(var(--primary) calc(var(--pct)*1%),rgba(255,255,255,0.04) 0);position:relative}
+body.light .score-circle{background:conic-gradient(#1565c0 calc(var(--pct)*1%),#e0e0e0 0)}
+.score-circle::before{content:"";position:absolute;width:90px;height:90px;background:var(--bg1);backdrop-filter:blur(4px);border-radius:50%;opacity:.85}
+body.light .score-circle::before{background:#fff;opacity:.9}
+.score-circle .pct{position:relative;font-size:1.8rem;font-weight:900;color:#fff}
+body.light .score-circle .pct{color:#000}
+.score-circle .lbl{position:relative;font-size:.7rem;color:var(--muted)}
+.mistake-item{border:1px solid var(--border-card);border-radius:12px;padding:12px;margin-bottom:10px;background:rgba(255,255,255,0.02)}
+body.light .mistake-item{background:#fff;border-color:#ccc}
+.mistake-item .m-q{font-weight:700;margin-bottom:2px}
+.mistake-item .m-you{color:var(--danger);font-size:.8rem}
+body.light .mistake-item .m-you{color:#c62828}
+.mistake-item .m-correct{color:var(--success);font-size:.8rem}
+body.light .mistake-item .m-correct{color:#2e7d32}
+.mistake-toggle{background:none;border:1px solid var(--border-card);border-radius:8px;padding:4px 12px;cursor:pointer;color:var(--text);font-size:.75rem;margin-top:6px}
+body.light .mistake-toggle{border-color:#ccc;color:#000}
+.mistake-detail{margin-top:10px;border:1px solid var(--border-card);border-radius:10px;padding:12px;background:rgba(255,255,255,0.03)}
+body.light .mistake-detail{background:#f9f9f9;border-color:#ccc}
+.mistake-detail .opt-row{display:flex;align-items:center;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border-card)}
+body.light .mistake-detail .opt-row{border-color:#ddd}
+.mistake-detail .opt-row:last-child{border-bottom:none}
+.mistake-detail .opt-label{flex:1}
+.mistake-detail .opt-status{font-size:1rem;margin-right:8px}
+.hidden{display:none!important}
+footer{text-align:center;color:var(--muted);font-size:.7rem;margin-top:20px;margin-bottom:8px;opacity:.6}
+footer .name{color:var(--primary);font-weight:700}
+body.light footer .name{color:#1565c0}
+.word-en{display:inline-block;cursor:default;transition:background .15s,transform .1s;padding:1px 2px;border-radius:4px;direction:ltr}
+.word-en:active{background:rgba(79,195,247,0.15);transform:scale(.97)}
+body.light .word-en:active{background:#bbdefb}
+.word-en.speaking{background:rgba(255,213,79,0.25);box-shadow:0 0 10px rgba(255,213,79,0.2)}
+body.light .word-en.speaking{background:#fff9c4}
+.speech-hint{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.7);backdrop-filter:blur(6px);color:#fff;padding:6px 18px;border-radius:30px;font-size:.8rem;pointer-events:none;opacity:0;transition:opacity .3s;z-index:999;border:1px solid rgba(255,255,255,0.1)}
+body.light .speech-hint{background:#f0f0f0;color:#000;border-color:#ccc}
+.speech-hint.show{opacity:1}
+.ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,0.25);transform:scale(0);animation:rippleAnim .5s linear;pointer-events:none}
+body.light .ripple{background:rgba(0,0,0,0.1)}
+@keyframes rippleAnim{to{transform:scale(3);opacity:0}}
+@media(max-width:480px){body{padding:8px 6px}.app{max-width:100%}.top-header h1{font-size:1.5rem}.card{padding:12px 10px}.action-icon{padding:4px 8px;min-width:44px}.action-icon .icon{font-size:1.2rem}.q-en{font-size:.9rem}.q-ar{font-size:.8rem}.option{padding:8px 10px}.big-btn{font-size:.85rem;padding:10px}.score-circle{width:100px;height:100px}.score-circle::before{width:75px;height:75px}.score-circle .pct{font-size:1.5rem}.progress-ring{width:56px;height:56px}.progress-ring svg{width:56px;height:56px}}
+.tf-badge{display:inline-block;font-size:.6rem;font-weight:700;padding:1px 8px;border-radius:12px;margin-right:6px;background:rgba(79,195,247,0.15);color:var(--primary)}
+body.light .tf-badge{background:#e3f2fd;color:#1565c0}
+</style>
+</head>
+<body>
+<div class="app">
+<div class="top-header"><h1>Biology QBank</h1><div class="sub">General Zoology - جميع الأسئلة</div><div class="creator"><i class="fas fa-user-graduate"></i> Created by <span class="name">MR. YASSIN THARWAT</span></div></div>
+<div class="theme-toggle-wrap"><div class="theme-toggle" id="themeToggle"><button class="active" data-theme="dark" onclick="setTheme('dark')"><i class="fas fa-moon"></i></button><button data-theme="light" onclick="setTheme('light')"><i class="fas fa-sun"></i></button></div></div>
+
+<div id="main-screen">
+<div class="card"><div class="card-title"><i class="fas fa-sliders-h"></i> الإجراءات</div>
+<div class="action-icons">
+<div class="action-icon active" data-target="modeOptions" onclick="toggleOptions('modeOptions')"><span class="icon">🎯</span><span class="label">المذاكرة</span></div>
+<div class="action-icon" data-target="orderOptions" onclick="toggleOptions('orderOptions')"><span class="icon">🔀</span><span class="label">الترتيب</span></div>
+<div class="action-icon" data-target="langOptions" onclick="toggleOptions('langOptions')"><span class="icon">🌐</span><span class="label">اللغة</span></div>
+<div class="action-icon" data-target="timerOptions" onclick="toggleOptions('timerOptions')"><span class="icon">⏱️</span><span class="label">المؤقت</span></div>
+</div>
+<div id="modeOptions" class="sub-options show"><button class="action-btn active" data-mode="practice" onclick="selectMode('practice')">تدريب</button><button class="action-btn" data-mode="test" onclick="selectMode('test')">اختبار</button></div>
+<div id="orderOptions" class="sub-options"><button class="action-btn active" data-order="device" onclick="selectOrder('device')">بالترتيب</button><button class="action-btn" data-order="random" onclick="selectOrder('random')">عشوائي</button></div>
+<div id="langOptions" class="sub-options"><button class="action-btn active" data-translate="yes" onclick="selectTranslate('yes')">ترجمة</button><button class="action-btn" data-translate="no" onclick="selectTranslate('no')">EN</button></div>
+<div id="timerOptions" class="sub-options"><button class="action-btn active" data-timer="0" onclick="selectTimer(0)">تثبيت</button><button class="action-btn" data-timer="5" onclick="selectTimer(5)">5s</button><button class="action-btn" data-timer="10" onclick="selectTimer(10)">10s</button></div>
+</div>
+
+<div class="card"><div class="card-title"><span><i class="fas fa-layer-group"></i> الأجزاء المختارة</span><button id="toggleAllBtn" class="toggle-all-btn" onclick="toggleAllSections()">تحديد الكل</button></div><div id="section-list" class="section-list"></div>
+<div id="section-explanation"><div class="explain-header"><h3 id="explain-title"></h3><div class="explain-controls"><button class="lang-btn active" data-lang="ar" onclick="setExplainLang('ar')">عربي</button><button class="lang-btn" data-lang="en" onclick="setExplainLang('en')">English</button><button class="close-explain" onclick="closeExplanation()"><i class="fas fa-times"></i></button></div></div><div id="explain-text" class="ar"></div></div></div>
+
+<button class="big-btn" onclick="startQuiz()"><i class="fas fa-play"></i> أبداً المذاكرة</button>
+
+<div class="card" id="progressCard"><div class="card-title"><i class="fas fa-chart-line"></i> تقدمك</div>
+<div class="progress-stats"><div class="progress-ring"><svg viewBox="0 0 70 70"><circle class="bg" cx="35" cy="35" r="28"/><circle class="fg" id="progressCircle" cx="35" cy="35" r="28" stroke-dashoffset="176"/></svg><div class="center-text" id="progressPercent">0<small>%</small></div></div>
+<div class="stats-row" style="flex:1;margin:0;"><div class="stat"><div class="num" id="statAttempted">0</div><div class="lbl">تم حله</div></div><div class="stat"><div class="num" id="statCorrect">0</div><div class="lbl">صح</div></div><div class="stat"><div class="num" id="statWrong">0</div><div class="lbl">غلط</div></div></div></div>
+<div class="weak-link" id="weakLink" onclick="startWeakSectionQuiz()"><i class="fas fa-lightbulb"></i> أضعف نقطة: <span id="weakSectionName">-</span> (<span id="weakSectionRate">0%</span>)</div>
+<div class="action-row-bottom"><button class="big-btn warn" onclick="reviewMistakes()"><i class="fas fa-undo-alt"></i> راجع أخطائي</button><button class="big-btn secondary" onclick="resetProgress()"><i class="fas fa-trash-alt"></i> تصفير</button></div></div>
+</div>
+
+<div id="screen-quiz"><div class="quiz-meta"><span id="quiz-position"><i class="fas fa-question-circle"></i> 1 / 10</span><span id="timer-badge" class="hidden"><i class="fas fa-hourglass-half"></i> 30</span><span id="quiz-score"><i class="fas fa-check-circle" style="color:var(--success);"></i> 0 <i class="fas fa-times-circle" style="color:var(--danger);margin-right:6px;"></i> 0</span></div><div class="progress-wrap"><div class="progress-bar" id="progress-bar"></div></div>
+<div class="card"><div class="q-header"><div class="q-tag" id="q-section-tag"><i class="fas fa-tag"></i> القسم</div></div><div class="q-en" id="q-en"></div><div class="q-ar" id="q-ar"></div><div class="options" id="options"></div><div id="feedback" class="feedback-box hidden"></div><div class="nav-row"><button class="big-btn secondary" id="btn-quit" onclick="quitQuiz()" style="flex:0 0 60px;"><i class="fas fa-sign-out-alt"></i></button><button class="big-btn secondary" id="btn-prev" onclick="previousQuestion()" disabled><i class="fas fa-arrow-right"></i></button><button class="big-btn" id="btn-next" onclick="nextQuestion()" disabled><i class="fas fa-arrow-left"></i> التالي</button></div></div></div>
+
+<div id="screen-results"><div class="card" style="text-align:center;"><div class="card-title" style="border:none;text-align:center;padding:0;"><i class="fas fa-trophy" style="color:var(--accent);"></i> نتيجتك</div><div class="score-circle" id="score-circle" style="--pct:0;"><div class="pct" id="result-pct">0%</div><div class="lbl">النسبة</div></div><div class="stats-row"><div class="stat"><div class="num" id="res-total">0</div><div class="lbl">إجمالي</div></div><div class="stat"><div class="num" id="res-correct" style="color:var(--success);">0</div><div class="lbl">صح</div></div><div class="stat"><div class="num" id="res-wrong" style="color:var(--danger);">0</div><div class="lbl">غلط</div></div></div><button class="big-btn" onclick="goHome()"><i class="fas fa-home"></i> الرئيسية</button><button class="big-btn warn hidden" id="btn-show-mistakes" onclick="showMistakesList()"><i class="fas fa-list-ul"></i> الأخطاء</button></div><div id="mistakes-list-wrap" class="card hidden"><div class="card-title"><i class="fas fa-exclamation-triangle" style="color:var(--danger);"></i> أخطائك</div><div id="mistakes-list"></div></div></div>
+
+<div id="speech-hint" class="speech-hint"><i class="fas fa-volume-up"></i> جارٍ النطق...</div>
+<footer>Created by <span class="name">MR. YASSIN THARWAT</span></footer>
+</div>
+
+<script>
+// ======================================================================
+// بنك الأسئلة - مادة الأحياء (General Zoology) - بدون صور
+// ======================================================================
+
+// ======================================================================
+// القسم 1: الخلية وبنيتها - MCQ (10 أسئلة)
+// ======================================================================
+const SECTION1_MCQ = [
+  {num:1,en:"Rank the following terms from the simplest to the most complex.",ar:"رتِّب المصطلحات التالية من الأبسط إلى الأكثر تعقيدًا.",options:[{en:"A. Organelles, cells, tissues, organs, organism",ar:"أ. عضيات، خلايا، أنسجة، أعضاء، كائن حي",correct:true},{en:"B. Cells, organelles, organs, tissues, organism",ar:"ب. خلايا، عضيات، أعضاء، أنسجة، كائن حي",correct:false},{en:"C. Tissues, cells, organelles, organs, organism",ar:"ج. أنسجة، خلايا، عضيات، أعضاء، كائن حي",correct:false},{en:"D. Organs, cells, organelles, tissues, organism",ar:"د. أعضاء، خلايا، عضيات، أنسجة، كائن حي",correct:false}],explain_ar:"التسلسل الصحيح من الأبسط إلى الأكثر تعقيدًا: عضيات ← خلايا ← أنسجة ← أعضاء ← كائن حي."},
+  {num:2,en:"Which organelles modify, sort and package proteins in the cell?",ar:"أي العضيات تعدل وتصنف وتغلف البروتينات في الخلية؟",options:[{en:"A. Mitochondria",ar:"أ. الميتوكوندريا",correct:false},{en:"B. Ribosomes",ar:"ب. الريبوسومات",correct:false},{en:"C. Golgi complex",ar:"ج. جهاز جولجي",correct:true},{en:"D. Lysosomes",ar:"د. اللايسوسومات",correct:false}],explain_ar:"جهاز جولجي (Golgi complex) يقوم بتعديل وتصنيف وتغليف البروتينات."},
+  {num:3,en:"The entrance of liquid materials across the cell membrane is called",ar:"دخول المواد السائلة عبر الغشاء الخلوي يُسمى",options:[{en:"A. Phagocytosis",ar:"أ. البلعمة",correct:false},{en:"B. Pinocytosis",ar:"ب. الالتقام السائل",correct:true},{en:"C. Exocytosis",ar:"ج. الإخراج الخلوي",correct:false},{en:"D. Plasmolysis",ar:"د. التحلل البلازمي",correct:false}],explain_ar:"الالتقام السائل (Pinocytosis) هو دخول المواد السائلة إلى الخلية."},
+  {num:4,en:"........ are cube-like cells with large, spherical central nuclei.",ar:"........ هي خلايا مكعبة الشكل ذات نوى كروية كبيرة مركزية.",options:[{en:"A. Pseudostratified columnar epithelium",ar:"أ. ظهارة عمادية كاذبة المطبقة",correct:false},{en:"B. Columnar epithelium",ar:"ب. ظهارة عمادية",correct:false},{en:"C. Cuboidal epithelium",ar:"ج. ظهارة مكعبة",correct:true},{en:"D. Squamous epithelium",ar:"د. ظهارة حرشفية",correct:false}],explain_ar:"الخلايا المكعبة (Cuboidal) تكون مكعبة الشكل مع نوى مركزية."},
+  {num:5,en:"The nucleus is enclosed in a double membrane known as",ar:"النواة محاطة بغشاء مزدوج يُعرف بـ",options:[{en:"A. Sarcoplasm",ar:"أ. الساركوبلازم",correct:false},{en:"B. Nuclear envelope",ar:"ب. الغلاف النووي",correct:true},{en:"C. Cell membrane",ar:"ج. الغشاء الخلوي",correct:false},{en:"D. Nucleoplasm",ar:"د. البلازم النووي",correct:false}],explain_ar:"الغلاف النووي (Nuclear envelope) هو الغشاء المزدوج المحيط بالنواة."},
+  {num:6,en:"Which membranous organelles are concerned with synthesis of lipids?",ar:"أي العضيات الغشائية تتعلق بتخليق الدهون؟",options:[{en:"A. Golgi apparatus",ar:"أ. جهاز جولجي",correct:false},{en:"B. Nucleus",ar:"ب. النواة",correct:false},{en:"C. Smooth Endoplasmic Reticulum",ar:"ج. الشبكة الإندوبلازمية الملساء",correct:true},{en:"D. Rough Endoplasmic Reticulum",ar:"د. الشبكة الإندوبلازمية الخشنة",correct:false}],explain_ar:"الشبكة الإندوبلازمية الملساء (SER) مسؤولة عن تخليق الدهون والفوسفوليبيدات."},
+  {num:7,en:"The epithelial tissue which present in the wall of blood vessels.",ar:"النسيج الظهاري الموجود في جدار الأوعية الدموية.",options:[{en:"A. Simple cuboidal epithelium",ar:"أ. ظهارة مكعبة بسيطة",correct:false},{en:"B. Stratified squamous epithelium",ar:"ب. ظهارة حرشفية مطبقة",correct:false},{en:"C. Simple squamous epithelium",ar:"ج. ظهارة حرشفية بسيطة",correct:true},{en:"D. Transitional epithelium",ar:"د. ظهارة انتقالية",correct:false}],explain_ar:"الظهارة الحرشفية البسيطة تبطن جدران الأوعية الدموية."},
+  {num:8,en:"All of the following are membranous organelles except.",ar:"جميع ما يلي عضيات غشائية عدا",options:[{en:"A. Mitochondria",ar:"أ. الميتوكوندريا",correct:false},{en:"B. Endoplasmic reticulum",ar:"ب. الشبكة الإندوبلازمية",correct:false},{en:"C. Golgi complex",ar:"ج. جهاز جولجي",correct:false},{en:"D. Cilia",ar:"د. الأهداب",correct:true}],explain_ar:"الأهداب (Cilia) ليست عضية غشائية، بل هي بروزات خلوية."},
+  {num:9,en:"The .... lie on either side of the membrane but are not bound to its hydrophobic interior.",ar:"........ تقع على جانبي الغشاء ولكنها غير مرتبطة بالجزء الداخلي الكاره للماء.",options:[{en:"A. Integral protein",ar:"أ. البروتين المدمج",correct:false},{en:"B. Peripheral protein",ar:"ب. البروتين المحيطي",correct:true},{en:"C. Cholesterol",ar:"ج. الكوليسترول",correct:false},{en:"D. Carbohydrates",ar:"د. الكربوهيدرات",correct:false}],explain_ar:"البروتينات المحيطية (Peripheral proteins) غير مرتبطة بالجزء الداخلي الكاره للماء."},
+  {num:10,en:"The epithelial tissue which is present in the skin.",ar:"النسيج الظهاري الموجود في الجلد.",options:[{en:"A. Simple cuboidal epithelium",ar:"أ. ظهارة مكعبة بسيطة",correct:false},{en:"B. Stratified squamous epithelium Keratinized",ar:"ب. ظهارة حرشفية مطبقة متقرنة",correct:true},{en:"C. Simple squamous epithelium",ar:"ج. ظهارة حرشفية بسيطة",correct:false},{en:"D. Stratified squamous epithelium non-Keratinized",ar:"د. ظهارة حرشفية مطبقة غير متقرنة",correct:false}],explain_ar:"الظهارة الحرشفية المطبقة المتقرنة تغطي الجلد."}
+];
+
+// ======================================================================
+// القسم 1: الخلية وبنيتها - True/False (11 سؤال)
+// ======================================================================
+const SECTION1_TF = [
+  {num:1,en:"The cell membrane regulates what enters and exits to the cell.",ar:"الغشاء الخلوي ينظم ما يدخل ويخرج من الخلية.",isTF:true,correct:true,explain_ar:"صحيح، الغشاء الخلوي ينظم النفاذية."},
+  {num:2,en:"Ribosomes are responsible for protein synthesis within the cell.",ar:"الريبوسومات مسؤولة عن تخليق البروتين داخل الخلية.",isTF:true,correct:true,explain_ar:"صحيح، الريبوسومات هي موقع تخليق البروتين."},
+  {num:3,en:"Connective tissue is avascular tissue (has no blood vessels).",ar:"النسيج الضام هو نسيج لا وعائي (ليس له أوعية دموية).",isTF:true,correct:false,explain_ar:"خطأ، النسيج الضام له أوعية دموية (عدا الغضروف)."},
+  {num:4,en:"The nucleus is enclosed in membrane known as nuclear envelope.",ar:"النواة محاطة بغشاء يعرف بالغلاف النووي.",isTF:true,correct:true,explain_ar:"صحيح."},
+  {num:5,en:"Both glycolipids and glycoproteins are called glycocalyx (cell coat).",ar:"كلا من الجليكوليبيدات والجليكوبروتينات تُسمى الجليكوكاليكس (الغطاء الخلوي).",isTF:true,correct:true,explain_ar:"صحيح."},
+  {num:6,en:"The membranous organelles are permanent components of the cell.",ar:"العضيات الغشائية هي مكونات دائمة للخلية.",isTF:true,correct:true,explain_ar:"صحيح."},
+  {num:7,en:"Mitochondria membranous organelles are the sites of energy production in cells.",ar:"الميتوكوندريا هي عضيات غشائية وهي مواقع إنتاج الطاقة في الخلايا.",isTF:true,correct:true,explain_ar:"صحيح."},
+  {num:8,en:"Centrioles organelles modify, sort and package proteins in the cell.",ar:"المريكزات هي عضيات تعدل وتصنف وتغلف البروتينات في الخلية.",isTF:true,correct:false,explain_ar:"خطأ، المريكزات تشارك في الانقسام الخلوي، وجهاز جولجي هو المسؤول عن تعديل وتغليف البروتينات."},
+  {num:9,en:"Lysosomes function to modify, sort and package proteins in the cell.",ar:"اللايسوسومات وظيفتها تعديل وتصنيف وتغليف البروتينات في الخلية.",isTF:true,correct:false,explain_ar:"خطأ، اللايسوسومات تحتوي على إنزيمات هاضمة، وجهاز جولجي هو المسؤول عن تعديل وتغليف البروتينات."},
+  {num:10,en:"Simple diffusion of molecules across the cell membrane requires energy from ATP.",ar:"الانتشار البسيط للجزيئات عبر الغشاء الخلوي يتطلب طاقة من ATP.",isTF:true,correct:false,explain_ar:"خطأ، الانتشار البسيط لا يحتاج إلى طاقة."},
+  {num:11,en:"Rough endoplasmic reticulum looks rough due to presence of ribosomes on their surfaces.",ar:"الشبكة الإندوبلازمية الخشنة تبدو خشنة بسبب وجود الريبوسومات على أسطحها.",isTF:true,correct:true,explain_ar:"صحيح."}
+];
+
+// ======================================================================
+// القسم 2: الأنسجة - MCQ (27 سؤال)
+// ======================================================================
+const SECTION2_MCQ = [
+  {num:1,en:"All of the following are membranous organelles except.",ar:"جميع ما يلي عضيات غشائية عدا",options:[{en:"A. Mitochondria",ar:"أ. الميتوكوندريا",correct:false},{en:"B. Ribosomes",ar:"ب. الريبوسومات",correct:true},{en:"C. Golgi complex",ar:"ج. جهاز جولجي",correct:false}],explain_ar:"الريبوسومات (Ribosomes) هي عضيات غير غشائية."},
+  {num:2,en:"The cell organelles which concerned with synthesis of lipids and phospholipids?",ar:"العضيات الخلوية التي تتعلق بتخليق الدهون والفوسفوليبيدات؟",options:[{en:"A. Golgi apparatus",ar:"أ. جهاز جولجي",correct:false},{en:"B. Mitochondria",ar:"ب. الميتوكوندريا",correct:false},{en:"C. Smooth endoplasmic reticulum",ar:"ج. الشبكة الإندوبلازمية الملساء",correct:true}],explain_ar:"SER مسؤولة عن تخليق الدهون والفوسفوليبيدات."},
+  {num:3,en:"Homogenous rounded vesicles, with hydrolyzing and digestive enzymes and surrounded by single membrane.",ar:"حويصلات مستديرة متجانسة، تحتوي على إنزيمات محللة وهاضمة ومحاطة بغشاء واحد.",options:[{en:"A. Nucleus",ar:"أ. النواة",correct:false},{en:"B. Centrioles",ar:"ب. المريكزات",correct:false},{en:"C. Lysosomes",ar:"ج. اللايسوسومات",correct:true}],explain_ar:"اللايسوسومات (Lysosomes) هي حويصلات تحتوي على إنزيمات هاضمة."},
+  {num:4,en:"The movement of molecules from high to low concentration through the lipid bilayer called.",ar:"حركة الجزيئات من التركيز المرتفع إلى المنخفض عبر الطبقة الدهنية المزدوجة تُسمى.",options:[{en:"A. Facilitated passive diffusion",ar:"أ. الانتشار السلبي الميسر",correct:false},{en:"B. Simple passive diffusion",ar:"ب. الانتشار السلبي البسيط",correct:true},{en:"C. Active transport",ar:"ج. النقل النشط",correct:false}],explain_ar:"الانتشار البسيط (Simple diffusion) هو حركة الجزيئات من التركيز المرتفع إلى المنخفض."},
+  {num:5,en:"The entrance of liquid material into the cell across the cell membrane called.",ar:"دخول المواد السائلة إلى الخلية عبر الغشاء الخلوي يُسمى.",options:[{en:"A. Phagocytosis",ar:"أ. البلعمة",correct:false},{en:"B. Endocytosis",ar:"ب. الالتقام الخلوي",correct:false},{en:"C. Pinocytosis",ar:"ج. الالتقام السائل",correct:true}],explain_ar:"الالتقام السائل (Pinocytosis) هو دخول المواد السائلة."},
+  {num:6,en:"What type of body cavity the nematodes have?",ar:"ما نوع التجويف الجسمي الذي تمتلكه النيماتودا؟",options:[{en:"A. Coelom",ar:"أ. جوف حقيقي",correct:false},{en:"B. Pseudocoelom",ar:"ب. جوف كاذب",correct:true},{en:"C. Acoelom",ar:"ج. لا جوفي",correct:false}],explain_ar:"النيماتودا تمتلك جوفاً كاذباً (Pseudocoelom)."},
+  {num:7,en:"These organisms have a chitinous exoskeleton and jointed appendages.",ar:"هذه الكائنات لها هيكل خارجي كيتيني وأطراف مفصلية.",options:[{en:"A. Echinoderms",ar:"أ. شوكيات الجلد",correct:false},{en:"B. Annelids",ar:"ب. الحلقيات",correct:false},{en:"C. Arthropods",ar:"ج. المفصليات",correct:true}],explain_ar:"المفصليات (Arthropods) لها هيكل خارجي كيتيني وأطراف مفصلية."},
+  {num:8,en:"A branch of zoology concerned with description, identification, nomenclature and classification of animals is called",ar:"فرع من علم الحيوان يهتم بوصف وتحديد وتسمية وتصنيف الحيوانات يُسمى",options:[{en:"A. Taxonomy",ar:"أ. علم التصنيف",correct:true},{en:"B. Histology",ar:"ب. علم الأنسجة",correct:false},{en:"C. Cytology",ar:"ج. علم الخلايا",correct:false}],explain_ar:"علم التصنيف (Taxonomy) يهتم بتصنيف الكائنات الحية."},
+  {num:9,en:"Are diploblastic animals",ar:"هي حيوانات ثنائية الأديم",options:[{en:"A. Annelida",ar:"أ. الحلقيات",correct:false},{en:"B. Platyhelminthes",ar:"ب. الديدان المفلطحة",correct:false},{en:"C. Cnidaria",ar:"ج. اللاسعات",correct:true}],explain_ar:"اللاسعات (Cnidaria) هي حيوانات ثنائية الأديم."},
+  {num:10,en:"In which phylum the digestive system is complete",ar:"في أي شعبة يكون الجهاز الهضمي كاملاً",options:[{en:"A. Nematoda",ar:"أ. النيماتودا",correct:true},{en:"B. Platyhelminthes",ar:"ب. الديدان المفلطحة",correct:false},{en:"C. Cnidaria",ar:"ج. اللاسعات",correct:false}],explain_ar:"النيماتودا (Nematoda) لها جهاز هضمي كامل (فم وشرج)."},
+  {num:11,en:"The plasma membrane of muscle fibers is known as.",ar:"الغشاء البلازمي للألياف العضلية يُعرف بـ.",options:[{en:"A. Sarcoplasm",ar:"أ. الساركوبلازم",correct:false},{en:"B. Sarcolemma",ar:"ب. الساركوليما",correct:true},{en:"C. Neurolemma",ar:"ج. النيوروليما",correct:false}],explain_ar:"الغشاء البلازمي للخلية العضلية يُسمى الساركوليما (Sarcolemma)."},
+  {num:12,en:".................. support and protect neurons as they do not participate in signal transmission.",ar:"........ تدعم وتحمي الخلايا العصبية ولا تشارك في نقل الإشارات.",options:[{en:"A. Neurons",ar:"أ. الخلايا العصبية",correct:false},{en:"B. Neuroglia",ar:"ب. الخلايا الدبقية",correct:true},{en:"C. Axons",ar:"ج. المحاور",correct:false}],explain_ar:"الخلايا الدبقية (Neuroglia) تدعم وتحمي الخلايا العصبية ولا تنقل الإشارات."},
+  {num:13,en:"Which one of the following is NOT considered a connective tissue?",ar:"أي مما يلي لا يعتبر نسيجًا ضامًا؟",options:[{en:"A. Cartilage",ar:"أ. الغضروف",correct:false},{en:"B. Bone",ar:"ب. العظم",correct:false},{en:"C. Muscle",ar:"ج. العضل",correct:true}],explain_ar:"النسيج العضلي (Muscle) ليس نسيجًا ضامًا، بل هو نسيج عضلي."},
+  {num:14,en:".................................................. acts as thermal insulation.",ar:"........ يعمل كعازل حراري.",options:[{en:"A. Connective tissue",ar:"أ. النسيج الضام",correct:true},{en:"B. Epithelial tissue",ar:"ب. النسيج الظهاري",correct:false},{en:"C. Bones",ar:"ج. العظام",correct:false}],explain_ar:"النسيج الضام الدهني (جزء من النسيج الضام) يوفر العزل الحراري."},
+  {num:15,en:"All types of connective tissue originate from.",ar:"جميع أنواع النسيج الضام تنشأ من.",options:[{en:"A. Mesoderm",ar:"أ. الأديم المتوسط",correct:true},{en:"B. Endoderm",ar:"ب. الأديم الباطن",correct:false},{en:"C. Ectoderm",ar:"ج. الأديم الظاهر",correct:false}],explain_ar:"النسيج الضام ينشأ من الأديم المتوسط (Mesoderm)."},
+  {num:16,en:"The axons of several neurons collect together to form.",ar:"محاور عدة خلايا عصبية تتجمع لتشكل.",options:[{en:"A. Muscles",ar:"أ. العضلات",correct:false},{en:"B. Nerves",ar:"ب. الأعصاب",correct:true},{en:"C. Schwann cell",ar:"ج. خلية شوان",correct:false}],explain_ar:"تجمع المحاور العصبية معًا يشكل العصب (Nerve)."},
+  {num:17,en:"............ are cube-like cells with large, spherical central nuclei.",ar:"........ هي خلايا مكعبة الشكل ذات نوى كروية كبيرة مركزية.",options:[{en:"A. Columnar epithelium",ar:"أ. ظهارة عمادية",correct:false},{en:"B. Squamous epithelium",ar:"ب. ظهارة حرشفية",correct:false},{en:"C. Cuboidal epithelium",ar:"ج. ظهارة مكعبة",correct:true}],explain_ar:"الخلايا المكعبة (Cuboidal) مكعبة الشكل مع نوى مركزية."},
+  {num:18,en:"Blood cells belong to.",ar:"خلايا الدم تنتمي إلى.",options:[{en:"A. Skeletal connective tissue",ar:"أ. النسيج الضام الهيكلي",correct:false},{en:"B. Epithelial tissue",ar:"ب. النسيج الظهاري",correct:false},{en:"C. Vascular connective tissue",ar:"ج. النسيج الضام الوعائي",correct:true}],explain_ar:"الدم هو نسيج ضام وعائي (Vascular connective tissue)."},
+  {num:19,en:"Bone and cartilage are.",ar:"العظم والغضروف هما.",options:[{en:"A. Skeletal connective tissue",ar:"أ. نسيج ضام هيكلي",correct:true},{en:"B. Vascular connective tissue",ar:"ب. نسيج ضام وعائي",correct:false},{en:"C. Connective Tissue Proper",ar:"ج. نسيج ضام خاص",correct:false}],explain_ar:"العظم والغضروف هما نسيج ضام هيكلي (Skeletal connective tissue)."},
+  {num:20,en:"The epithelial tissue which present in the wall of blood vessels.",ar:"النسيج الظهاري الموجود في جدار الأوعية الدموية.",options:[{en:"A. Simple cuboidal epithelium",ar:"أ. ظهارة مكعبة بسيطة",correct:false},{en:"B. Stratified squamous epithelium",ar:"ب. ظهارة حرشفية مطبقة",correct:false},{en:"C. Simple squamous epithelium",ar:"ج. ظهارة حرشفية بسيطة",correct:true}],explain_ar:"الظهارة الحرشفية البسيطة تبطن الأوعية الدموية."},
+  {num:21,en:"The ............ lie on either side of the membrane but are not bound to its hydrophobic interior.",ar:"........ تقع على جانبي الغشاء ولكنها غير مرتبطة بالجزء الداخلي الكاره للماء.",options:[{en:"A. Integral protein",ar:"أ. البروتين المدمج",correct:false},{en:"B. Peripheral protein",ar:"ب. البروتين المحيطي",correct:true},{en:"C. Cholesterol",ar:"ج. الكوليسترول",correct:false},{en:"D. Carbohydrates",ar:"د. الكربوهيدرات",correct:false}],explain_ar:"البروتينات المحيطية غير مرتبطة بالجزء الداخلي الكاره للماء."},
+  {num:22,en:"Bone and cartilage are.",ar:"العظم والغضروف هما.",options:[{en:"A. Skeletal connective tissue",ar:"أ. نسيج ضام هيكلي",correct:true},{en:"B. Vascular connective tissue",ar:"ب. نسيج ضام وعائي",correct:false},{en:"C. Connective Tissue Proper",ar:"ج. نسيج ضام خاص",correct:false},{en:"D. Epithelial tissue",ar:"د. نسيج ظهاري",correct:false}],explain_ar:"العظم والغضروف هما نسيج ضام هيكلي."},
+  {num:23,en:"Which of the following molecules would NOT be found in animal plasma membranes?",ar:"أي من الجزيئات التالية لا توجد في الأغشية البلازمية للحيوان؟",options:[{en:"A. Proteins",ar:"أ. البروتينات",correct:false},{en:"B. Phospholipids",ar:"ب. الفوسفوليبيدات",correct:false},{en:"C. Cholesterols",ar:"ج. الكوليسترول",correct:false},{en:"D. Nucleic acids",ar:"د. الأحماض النووية",correct:true}],explain_ar:"الأحماض النووية (Nucleic acids) لا توجد في الغشاء البلازمي."},
+  {num:24,en:"The epithelial tissue which is present in the skin.",ar:"النسيج الظهاري الموجود في الجلد.",options:[{en:"A. Simple cuboidal epithelium",ar:"أ. ظهارة مكعبة بسيطة",correct:false},{en:"B. Stratified squamous epithelium Keratinized",ar:"ب. ظهارة حرشفية مطبقة متقرنة",correct:true},{en:"C. Simple squamous epithelium",ar:"ج. ظهارة حرشفية بسيطة",correct:false},{en:"D. Stratified squamous epithelium non-Keratinized",ar:"د. ظهارة حرشفية مطبقة غير متقرنة",correct:false}],explain_ar:"الجلد مغطى بظهارة حرشفية مطبقة متقرنة."},
+  {num:25,en:"What type of gland secretes its product through a duct or tube?",ar:"ما نوع الغدة التي تفرز منتجها عبر قناة أو أنبوب؟",options:[{en:"A. Endocrine",ar:"أ. صماء",correct:false},{en:"B. Exocrine",ar:"ب. خارجية الإفراز",correct:true},{en:"C. Holocrine",ar:"ج. هولوكرين",correct:false},{en:"D. Goblet cells",ar:"د. خلايا كأسية",correct:false}],explain_ar:"الغدد الخارجية الإفراز (Exocrine) تفرز عبر قنوات."},
+  {num:26,en:".................. support and protect neurons as they do not participate in signal transmission.",ar:"........ تدعم وتحمي الخلايا العصبية ولا تشارك في نقل الإشارات.",options:[{en:"A. Neurons",ar:"أ. الخلايا العصبية",correct:false},{en:"B. Neuroglia",ar:"ب. الخلايا الدبقية",correct:true},{en:"C. Axons",ar:"ج. المحاور",correct:false},{en:"D. Myofibrils",ar:"د. اللييفات العضلية",correct:false}],explain_ar:"الخلايا الدبقية (Neuroglia) تدعم وتحمي الخلايا العصبية."},
+  {num:27,en:"The plasma membrane of muscle fibers is known as.",ar:"الغشاء البلازمي للألياف العضلية يُعرف بـ.",options:[{en:"A. Sarcoplasm",ar:"أ. الساركوبلازم",correct:false},{en:"B. Sarcolemma",ar:"ب. الساركوليما",correct:true},{en:"C. Neurolemma",ar:"ج. النيوروليما",correct:false},{en:"D. Nucleoplasm",ar:"د. البلازم النووي",correct:false}],explain_ar:"الغشاء البلازمي للخلية العضلية هو الساركوليما."}
+];
+
+// ======================================================================
+// القسم 2: الأنسجة - True/False (23 سؤال)
+// ======================================================================
+const SECTION2_TF = [
+  {num:1,en:"Tissues are group of cells that are similar in structure and perform common or related functions.",ar:"الأنسجة هي مجموعة من الخلايا المتشابهة في البنية والتي تؤدي وظائف مشتركة أو مرتبطة.",isTF:true,correct:true,explain_ar:"صحيح."},
+  {num:2,en:"Connective tissue is avascular tissue (has no blood vessels).",ar:"النسيج الضام هو نسيج لا وعائي (ليس له أوعية دموية).",isTF:true,correct:false,explain_ar:"خطأ، النسيج الضام له أوعية دموية (عدا الغضروف)."},
+  {num:3,en:"Muscular tissue is the body tissue which covers exposed surfaces, lines body cavities and forms glands.",ar:"النسيج العضلي هو النسيج الذي يغطي الأسطح المكشوفة ويبطن التجاويف ويشكل الغدد.",isTF:true,correct:false,explain_ar:"خطأ، هذا وصف النسيج الظهاري."},
+  {num:4,en:"Exocrine glands releases their secretory product into the extracellular space from which it enters the bloodstream.",ar:"الغدد الخارجية الإفراز تفرز منتجها في الفضاء خارج الخلية ومنه يدخل إلى مجرى الدم.",isTF:true,correct:false,explain_ar:"خطأ، هذا وصف الغدد الصماء."},
+  {num:5,en:"The term stratified refers to the fact that an epithelial tissue has only one layer of cells.",ar:"مصطلح مطبق يشير إلى أن النسيج الظهاري له طبقة واحدة من الخلايا.",isTF:true,correct:false,explain_ar:"خطأ، stratified تعني متعدد الطبقات."},
+  {num:6,en:"Goblet cell is considered as unicellular gland.",ar:"الخلية الكأسية تعتبر غدة وحيدة الخلية.",isTF:true,correct:true,explain_ar:"صحيح."},
+  {num:7,en:"Pseudocoelum, the body cavity that is completely surrounded by tissue derived from the mesoderm.",ar:"الجوف الكاذب هو تجويف جسمي محاط بالكامل بنسيج مشتق من الأديم المتوسط.",isTF:true,correct:false,explain_ar:"خطأ، الجوف الحقيقي (Coelom) هو المحاط بالأديم المتوسط."},
+  {num:8,en:"Histology is the science of biology that deals with the formation, structure and function of cells.",ar:"علم الأنسجة هو علم الأحياء الذي يدرس تكوين وبنية ووظيفة الخلايا.",isTF:true,correct:false,explain_ar:"خطأ، هذا تعريف علم الخلايا (Cytology)."},
+  {num:9,en:"Golgi apparatus, a membranous organelle involved in lipid synthesis.",ar:"جهاز جولجي هو عضية غشائية تشارك في تخليق الدهون.",isTF:true,correct:false,explain_ar:"خطأ، جهاز جولجي يشارك في تعديل وتغليف البروتينات، والشبكة الإندوبلازمية الملساء تشارك في تخليق الدهون."},
+  {num:10,en:"Columnar cells are cube-like cells with large, spherical central nuclei.",ar:"الخلايا العمادية هي خلايا مكعبة الشكل ذات نوى كروية كبيرة مركزية.",isTF:true,correct:false,explain_ar:"خطأ، هذا وصف الخلايا المكعبة (Cuboidal)."},
+  {num:11,en:"Connective tissue is the body tissue which covers exposed surfaces, lines body cavities and forms glands.",ar:"النسيج الضام هو النسيج الذي يغطي الأسطح المكشوفة ويبطن التجاويف ويشكل الغدد.",isTF:true,correct:false,explain_ar:"خطأ، هذا وصف النسيج الظهاري."},
+  {num:12,en:"2ry Lysosomes are homogenous rounded vesicles, surrounded by single membrane.",ar:"اللايسوسومات الثانوية هي حويصلات مستديرة متجانسة محاطة بغشاء واحد.",isTF:true,correct:true,explain_ar:"صحيح."},
+  {num:13,en:"Phylum Annelida is characterized by radial symmetry.",ar:"شعبة الحلقيات تتميز بالتماثل الشعاعي.",isTF:true,correct:false,explain_ar:"خطأ، الحلقيات تتميز بالتماثل الجانبي الثنائي."},
+  {num:14,en:"Amoeba moves using pseudopodia.",ar:"الأميبا تتحرك باستخدام الأقدام الكاذبة.",isTF:true,correct:true,explain_ar:"صحيح، الأميبا تتحرك بالأقدام الكاذبة."},
+  {num:15,en:"The notochord is a supporting structure found at all chordates.",ar:"الحبل الظهري هو تركيب داعم يوجد في جميع الحبليات.",isTF:true,correct:true,explain_ar:"صحيح، الحبل الظهري موجود في جميع الحبليات في مرحلة ما."},
+  {num:16,en:"The body of leechs divided into several annuli.",ar:"جسم العلق مقسم إلى عدة حلقات (أنيولات).",isTF:true,correct:true,explain_ar:"صحيح، العلق من الحلقيات وجسمه مقسم."},
+  {num:17,en:"Endocytosis refers to the movement of materials from the cell across the cell membrane to outside the cell.",ar:"الالتقام الخلوي يشير إلى حركة المواد من داخل الخلية عبر الغشاء إلى خارج الخلية.",isTF:true,correct:false,explain_ar:"خطأ، الالتقام الخلوي هو حركة المواد إلى داخل الخلية."},
+  {num:18,en:"The cell membrane functions in the protection of the cell against the invading materials.",ar:"الغشاء الخلوي يعمل على حماية الخلية من المواد الغازية.",isTF:true,correct:true,explain_ar:"صحيح، الغشاء الخلوي يوفر الحماية."},
+  {num:19,en:"Multicellular glands consist of a single secretory cell as in goblet cells.",ar:"الغدد متعددة الخلايا تتكون من خلية إفرازية واحدة كما في الخلايا الكأسية.",isTF:true,correct:false,explain_ar:"خطأ، الخلايا الكأسية هي غدد وحيدة الخلية (unicellular)."},
+  {num:20,en:"Oesophagus is lined with stratified squamous epithelium non-keratinized.",ar:"المريء مبطن بظهارة حرشفية مطبقة غير متقرنة.",isTF:true,correct:true,explain_ar:"صحيح."},
+  {num:21,en:"The cell membrane protects the cell against invading materials.",ar:"الغشاء الخلوي يحمي الخلية من المواد الغازية.",isTF:true,correct:true,explain_ar:"صحيح."},
+  {num:22,en:"Connective tissue is avascular tissue (has no blood vessels).",ar:"النسيج الضام هو نسيج لا وعائي.",isTF:true,correct:false,explain_ar:"خطأ، النسيج الضام له أوعية دموية."},
+  {num:23,en:"The oesophagus lined with stratified squamous epithelium non-Keratinized.",ar:"المريء مبطن بظهارة حرشفية مطبقة غير متقرنة.",isTF:true,correct:true,explain_ar:"صحيح."}
+];
+
+// ======================================================================
+// القسم 3: الجهاز الغدي الصماء - MCQ (8 أسئلة)
+// ======================================================================
+const SECTION3_MCQ = [
+  {num:1,en:"The ............... hormone stimulates milk production.",ar:"هرمون ........ يحفز إنتاج الحليب.",options:[{en:"A. Prolactin",ar:"أ. البرولاكتين",correct:true},{en:"B. FSH",ar:"ب. FSH",correct:false},{en:"C. LH",ar:"ج. LH",correct:false}],explain_ar:"البرولاكتين (Prolactin) يحفز إنتاج الحليب."},
+  {num:2,en:"................ secrets calcitonin hormone which stimulates calcium uptake by bones.",ar:"........ تفرز هرمون الكالسيتونين الذي يحفز امتصاص الكالسيوم بواسطة العظام.",options:[{en:"A. Thyroid gland",ar:"أ. الغدة الدرقية",correct:true},{en:"B. Adrenal gland",ar:"ب. الغدة الكظرية",correct:false},{en:"C. Pancreas",ar:"ج. البنكرياس",correct:false}],explain_ar:"الغدة الدرقية (Thyroid) تفرز الكالسيتونين لخفض الكالسيوم."},
+  {num:3,en:"How many successive divisions are required to go from a zygote to 32 cell embryo stage?",ar:"كم انقسامًا متتاليًا مطلوبًا للانتقال من الزيجوت إلى مرحلة الجنين المكون من 32 خلية؟",options:[{en:"A. 6",ar:"أ. 6",correct:false},{en:"B. 8",ar:"ب. 8",correct:false},{en:"C. 3",ar:"ج. 3",correct:false},{en:"D. 5",ar:"د. 5",correct:true}],explain_ar:"2^5 = 32، إذن هناك 5 انقسامات متتالية."},
+  {num:4,en:"The ...... produces melatonin which affects the biological clock (light/dark time).",ar:"........ تنتج الميلاتونين الذي يؤثر على الساعة البيولوجية (وقت الضوء/الظلام).",options:[{en:"A. Pineal gland",ar:"أ. الغدة الصنوبرية",correct:true},{en:"B. Thyroid gland",ar:"ب. الغدة الدرقية",correct:false},{en:"C. Adrenal",ar:"ج. الكظرية",correct:false},{en:"D. Parathyroid gland",ar:"د. الغدة الجاردرقية",correct:false}],explain_ar:"الغدة الصنوبرية (Pineal) تنتج الميلاتونين لتنظيم النوم."},
+  {num:5,en:"............ hormone increases the level of sugar in the blood.",ar:"هرمون ........ يزيد مستوى السكر في الدم.",options:[{en:"A. Insulin",ar:"أ. الأنسولين",correct:false},{en:"B. Glycogen",ar:"ب. الجليكوجين",correct:false},{en:"C. Glucagon",ar:"ج. الجلوكاجون",correct:true},{en:"D. Parathyroid",ar:"د. الجاردرقية",correct:false}],explain_ar:"الجلوكاجون (Glucagon) يرفع مستوى السكر في الدم."},
+  {num:6,en:"Thyroid stimulating hormone is produced by ............ gland",ar:"الهرمون المنبه للدرقية تنتجه غدة ........",options:[{en:"A. Thyroid",ar:"أ. الدرقية",correct:false},{en:"B. Anterior lobe of pituitary",ar:"ب. الفص الأمامي للنخامية",correct:true},{en:"C. Parathyroid",ar:"ج. الجاردرقية",correct:false},{en:"D. Posterior lobe of pituitary",ar:"د. الفص الخلفي للنخامية",correct:false}],explain_ar:"TSH يُنتج من الفص الأمامي للغدة النخامية."},
+  {num:7,en:"The yolk concentrated at vegetal pole in the ........ egg.",ar:"المح يكون مركزًا في القطب النباتي في البويضة .........",options:[{en:"A. Isolecithal",ar:"أ. قليلة المح",correct:false},{en:"B. Telolecithal",ar:"ب. طرفية المح",correct:true},{en:"C. Centrolecithal",ar:"ج. مركزية المح",correct:false},{en:"D. All of them",ar:"د. كلها",correct:false}],explain_ar:"البويضة طرفية المح (Telolecithal) يكون المح فيها مركزًا في القطب النباتي."},
+  {num:8,en:"The germ layer from which the Nervous system originates?",ar:"الطبقة الجنينية التي ينشأ منها الجهاز العصبي؟",options:[{en:"A. Ectoderm",ar:"أ. الأديم الظاهر",correct:true},{en:"B. Endoderm",ar:"ب. الأديم الباطن",correct:false},{en:"C. Mesoderm",ar:"ج. الأديم المتوسط",correct:false},{en:"D. All of them",ar:"د. كلها",correct:false}],explain_ar:"الجهاز العصبي ينشأ من الأديم الظاهر (Ectoderm)."}
+];
+
+// ======================================================================
+// القسم 3: الجهاز الغدي الصماء - True/False (2 سؤال)
+// ======================================================================
+const SECTION3_TF = [
+  {num:1,en:"Endocrine glands secrete their hormones into bloodstream.",ar:"الغدد الصماء تفرز هرموناتها في مجرى الدم.",isTF:true,correct:true,explain_ar:"صحيح."},
+  {num:2,en:"Exocrine glands release their secretory product into the extracellular space from which it enters the bloodstream.",ar:"الغدد خارجية الإفراز تفرز منتجها في الفضاء خارج الخلية ومنه يدخل إلى مجرى الدم.",isTF:true,correct:false,explain_ar:"خطأ، هذا وصف الغدد الصماء."}
+];
+
+// ======================================================================
+// القسم 4: أسئلة إضافية - MCQ
+// ======================================================================
+const SECTION4_MCQ = [
+  {num:1,en:"Tissues which has little extracellular material (small spaces between cells).",ar:"الأنسجة التي تحتوي على مادة خارج خلوية قليلة (مسافات صغيرة بين الخلايا).",options:[{en:"A. Epithelial tissue",ar:"أ. النسيج الظهاري",correct:true},{en:"B. Connective tissue",ar:"ب. النسيج الضام",correct:false},{en:"C. Skeletal tissue",ar:"ج. النسيج الهيكلي",correct:false}],explain_ar:"النسيج الظهاري يحتوي على مادة خارج خلوية قليلة."},
+  {num:2,en:"Heterogenous rounded bodies containing digested elements.",ar:"أجسام مستديرة غير متجانسة تحتوي على عناصر مهضومة.",options:[{en:"A. Primary Lysosome",ar:"أ. اللايسوسوم الأولي",correct:false},{en:"B. Secondary Lysosome",ar:"ب. اللايسوسوم الثانوي",correct:true},{en:"C. Mitochondria",ar:"ج. الميتوكوندريا",correct:false}],explain_ar:"اللايسوسوم الثانوي يحتوي على مواد مهضومة."},
+  {num:3,en:"Which membranous organelles are the sites of energy production in cells?",ar:"أي العضيات الغشائية هي مواقع إنتاج الطاقة في الخلايا؟",options:[{en:"A. Mitochondria",ar:"أ. الميتوكوندريا",correct:true},{en:"B. Golgi complex",ar:"ب. جهاز جولجي",correct:false},{en:"C. Endoplasmic reticulum",ar:"ج. الشبكة الإندوبلازمية",correct:false}],explain_ar:"الميتوكوندريا هي موقع إنتاج الطاقة (ATP)."},
+  {num:4,en:"The cell coat 'glycocalyx' consisted of",ar:"الغطاء الخلوي (الجليكوكاليكس) يتكون من",options:[{en:"A. Glycolipids",ar:"أ. جليكوليبيدات",correct:false},{en:"B. Glycoproteins",ar:"ب. جليكوبروتينات",correct:false},{en:"C. Both of them",ar:"ج. كلاهما",correct:true}],explain_ar:"الجليكوكاليكس يتكون من جليكوليبيدات وجليكوبروتينات."},
+  {num:5,en:"Transport of molecules against their concentration",ar:"نقل الجزيئات عكس تركيزها",options:[{en:"A. Active transport",ar:"أ. النقل النشط",correct:true},{en:"B. Passive transport",ar:"ب. النقل السلبي",correct:false},{en:"C. None of them",ar:"ج. لا شيء مما سبق",correct:false}],explain_ar:"النقل النشط ينقل الجزيئات عكس تركيزها."},
+  {num:6,en:".................... consists of stack, each one has a concave mature surface (Trans face) and a convex immature surface (Cis face).",ar:"........ يتكون من صفائح متراصة، لكل منها سطح ناضج مقعر (وجه Trans) وسطح غير ناضج محدب (وجه Cis).",options:[{en:"A. Golgi complex",ar:"أ. جهاز جولجي",correct:true},{en:"B. Mitochondria",ar:"ب. الميتوكوندريا",correct:false},{en:"C. Lysosomes",ar:"ج. اللايسوسومات",correct:false}],explain_ar:"جهاز جولجي يتكون من صفائح ذات وجهين Cis و Trans."},
+  {num:7,en:"The movement of molecules from high to low concentration through the protein layer of the cell membrane.",ar:"حركة الجزيئات من التركيز المرتفع إلى المنخفض عبر الطبقة البروتينية للغشاء الخلوي.",options:[{en:"A. Facilitated diffusion",ar:"أ. الانتشار الميسر",correct:true},{en:"B. Simple diffusion",ar:"ب. الانتشار البسيط",correct:false},{en:"C. Active transport",ar:"ج. النقل النشط",correct:false}],explain_ar:"الانتشار الميسر (Facilitated diffusion) يحدث عبر البروتينات."},
+  {num:8,en:"The movement of materials from the cell across the cell membrane to outside the cell.",ar:"حركة المواد من داخل الخلية عبر الغشاء الخلوي إلى خارج الخلية.",options:[{en:"A. Exocytosis",ar:"أ. الإخراج الخلوي",correct:true},{en:"B. Endocytosis",ar:"ب. الالتقام الخلوي",correct:false},{en:"C. All of them",ar:"ج. كلاهما",correct:false}],explain_ar:"الإخراج الخلوي (Exocytosis) هو حركة المواد من الخلية إلى الخارج."}
+];
+
+// ======================================================================
+// القسم 5: أسئلة الإكمال - MCQ
+// ======================================================================
+const SECTION5_MCQ = [
+  {num:1,en:"The gland which releases their secretory product into the extracellular space from which it enters the bloodstream.",ar:"الغدة التي تفرز منتجها في الفضاء خارج الخلية ومنه يدخل إلى مجرى الدم.",options:[{en:"A. Exocrine gland",ar:"أ. غدة خارجية الإفراز",correct:false},{en:"B. Endocrine gland",ar:"ب. غدة صماء",correct:true},{en:"C. Salivary gland",ar:"ج. غدة لعابية",correct:false},{en:"D. Sweat gland",ar:"د. غدة عرقية",correct:false}],explain_ar:"الغدة الصماء (Endocrine) تفرز هرموناتها مباشرة في الدم."},
+  {num:2,en:"A collection of cells with a similar structural make-up and similar or related functions.",ar:"مجموعة من الخلايا ذات تركيب مشابه ووظائف متشابهة أو مرتبطة.",options:[{en:"A. Tissue",ar:"أ. نسيج",correct:true},{en:"B. Organ",ar:"ب. عضو",correct:false},{en:"C. System",ar:"ج. جهاز",correct:false},{en:"D. Cell",ar:"د. خلية",correct:false}],explain_ar:"النسيج (Tissue) هو مجموعة من الخلايا المتشابهة."},
+  {num:3,en:"The type of epithelial cells which appear taller than they wide.",ar:"نوع الخلايا الظهارية التي تبدو أطول منها عرضًا.",options:[{en:"A. Cuboidal epithelium",ar:"أ. ظهارة مكعبة",correct:false},{en:"B. Columnar epithelium",ar:"ب. ظهارة عمادية",correct:true},{en:"C. Squamous epithelium",ar:"ج. ظهارة حرشفية",correct:false},{en:"D. Transitional epithelium",ar:"د. ظهارة انتقالية",correct:false}],explain_ar:"الخلايا العمادية (Columnar) تكون أطول من عرضها."},
+  {num:4,en:"The body tissue which covers exposed surfaces, lines body cavities and forms glands.",ar:"النسيج الذي يغطي الأسطح المكشوفة ويبطن التجاويف ويشكل الغدد.",options:[{en:"A. Epithelial tissue",ar:"أ. النسيج الظهاري",correct:true},{en:"B. Connective tissue",ar:"ب. النسيج الضام",correct:false},{en:"C. Skeletal tissue",ar:"ج. النسيج الهيكلي",correct:false},{en:"D. Nervous tissue",ar:"د. النسيج العصبي",correct:false}],explain_ar:"النسيج الظهاري (Epithelial) يغطي الأسطح ويبطن التجاويف."},
+  {num:5,en:"................... protein lie on either side of the cell membrane but are not bound to its hydrophobic interior.",ar:"........ بروتين يقع على جانبي الغشاء الخلوي ولكنه غير مرتبط بالجزء الداخلي الكاره للماء.",options:[{en:"A. Integral",ar:"أ. مدمج",correct:false},{en:"B. Peripheral",ar:"ب. محيطي",correct:true},{en:"C. Transmembrane",ar:"ج. عابر للغشاء",correct:false},{en:"D. Glycoprotein",ar:"د. جليكوبروتين",correct:false}],explain_ar:"البروتين المحيطي (Peripheral) غير مرتبط بالجزء الداخلي الكاره للماء."},
+  {num:6,en:"The nucleus is enclosed in a double membrane which known as .......................",ar:"النواة محاطة بغشاء مزدوج يُعرف بـ ...............",options:[{en:"A. Nuclear envelope",ar:"أ. الغلاف النووي",correct:true},{en:"B. Cell membrane",ar:"ب. الغشاء الخلوي",correct:false},{en:"C. Nucleoplasm",ar:"ج. البلازم النووي",correct:false},{en:"D. Sarcoplasm",ar:"د. الساركوبلازم",correct:false}],explain_ar:"الغلاف النووي (Nuclear envelope) هو الغشاء المزدوج المحيط بالنواة."},
+  {num:7,en:"................................ is a process of entrance of solid material into the cell across the cell membrane.",ar:"........ هو عملية دخول المواد الصلبة إلى الخلية عبر الغشاء الخلوي.",options:[{en:"A. Pinocytosis",ar:"أ. الالتقام السائل",correct:false},{en:"B. Phagocytosis",ar:"ب. البلعمة",correct:true},{en:"C. Exocytosis",ar:"ج. الإخراج الخلوي",correct:false},{en:"D. Diffusion",ar:"د. الانتشار",correct:false}],explain_ar:"البلعمة (Phagocytosis) هي دخول المواد الصلبة إلى الخلية."},
+  {num:8,en:".................................................... belongs to non-membranous organelles.",ar:"........ تنتمي إلى العضيات غير الغشائية.",options:[{en:"A. Mitochondria",ar:"أ. الميتوكوندريا",correct:false},{en:"B. Golgi apparatus",ar:"ب. جهاز جولجي",correct:false},{en:"C. Ribosomes",ar:"ج. الريبوسومات",correct:true},{en:"D. Endoplasmic reticulum",ar:"د. الشبكة الإندوبلازمية",correct:false}],explain_ar:"الريبوسومات (Ribosomes) هي عضيات غير غشائية."},
+  {num:9,en:"The epithelial tissue which presents in the skin known as................................",ar:"النسيج الظهاري الموجود في الجلد يُعرف بـ ...............",options:[{en:"A. Simple squamous epithelium",ar:"أ. ظهارة حرشفية بسيطة",correct:false},{en:"B. Stratified squamous epithelium Keratinized",ar:"ب. ظهارة حرشفية مطبقة متقرنة",correct:true},{en:"C. Simple cuboidal epithelium",ar:"ج. ظهارة مكعبة بسيطة",correct:false},{en:"D. Transitional epithelium",ar:"د. ظهارة انتقالية",correct:false}],explain_ar:"الجلد مغطى بظهارة حرشفية مطبقة متقرنة."}
+];
+
+// ======================================================================
+// القسم 6: أسئلة المطابقة - MCQ
+// ======================================================================
+const SECTION6_MCQ = [
+  {num:1,en:"Match: Membranous organelles are concerned with synthesis of lipids and phospholipids.",ar:"طابق: العضيات الغشائية التي تتعلق بتخليق الدهون والفوسفوليبيدات.",options:[{en:"A. Smooth Endoplasmic Reticulum",ar:"أ. الشبكة الإندوبلازمية الملساء",correct:true},{en:"B. Rough Endoplasmic Reticulum",ar:"ب. الشبكة الإندوبلازمية الخشنة",correct:false},{en:"C. Golgi apparatus",ar:"ج. جهاز جولجي",correct:false},{en:"D. Mitochondria",ar:"د. الميتوكوندريا",correct:false}],explain_ar:"الشبكة الإندوبلازمية الملساء (SER) مسؤولة عن تخليق الدهون."},
+  {num:2,en:"Match: Acts as thermal insulation.",ar:"طابق: يعمل كعازل حراري.",options:[{en:"A. Epithelial tissue",ar:"أ. النسيج الظهاري",correct:false},{en:"B. Connective tissue",ar:"ب. النسيج الضام",correct:true},{en:"C. Muscular tissue",ar:"ج. النسيج العضلي",correct:false},{en:"D. Nervous tissue",ar:"د. النسيج العصبي",correct:false}],explain_ar:"النسيج الضام الدهني يوفر العزل الحراري."},
+  {num:3,en:"Match: Walls of blood vessels.",ar:"طابق: جدران الأوعية الدموية.",options:[{en:"A. Simple squamous epithelium",ar:"أ. ظهارة حرشفية بسيطة",correct:true},{en:"B. Simple cuboidal epithelium",ar:"ب. ظهارة مكعبة بسيطة",correct:false},{en:"C. Stratified squamous epithelium",ar:"ج. ظهارة حرشفية مطبقة",correct:false},{en:"D. Columnar epithelium",ar:"د. ظهارة عمادية",correct:false}],explain_ar:"الظهارة الحرشفية البسيطة تبطن الأوعية الدموية."},
+  {num:4,en:"Match: The cell organelles which concerned with synthesis of lipids and phospholipids.",ar:"طابق: العضيات الخلوية التي تتعلق بتخليق الدهون والفوسفوليبيدات.",options:[{en:"A. Rough endoplasmic reticulum",ar:"أ. الشبكة الإندوبلازمية الخشنة",correct:false},{en:"B. Smooth endoplasmic reticulum",ar:"ب. الشبكة الإندوبلازمية الملساء",correct:true},{en:"C. Golgi apparatus",ar:"ج. جهاز جولجي",correct:false},{en:"D. Lysosomes",ar:"د. اللايسوسومات",correct:false}],explain_ar:"SER مسؤولة عن تخليق الدهون."},
+  {num:5,en:"Match: The body tissue which covers exposed surfaces, lines body cavities and forms glands.",ar:"طابق: النسيج الذي يغطي الأسطح المكشوفة ويبطن التجاويف ويشكل الغدد.",options:[{en:"A. Connective tissue",ar:"أ. النسيج الضام",correct:false},{en:"B. Epithelial tissue",ar:"ب. النسيج الظهاري",correct:true},{en:"C. Muscular tissue",ar:"ج. النسيج العضلي",correct:false},{en:"D. Nervous tissue",ar:"د. النسيج العصبي",correct:false}],explain_ar:"النسيج الظهاري يغطي الأسطح ويبطن التجاويف."}
+];
+
+// ======================================================================
+// بناء البنك النهائي
+// ======================================================================
+const QUESTION_BANK = [
+  {name:"الخلية وبنيتها (اختياري)", nameEn:"Cell Structure (MCQ)", originalName:"الخلية وبنيتها", questions:SECTION1_MCQ},
+  {name:"الخلية وبنيتها (صواب/خطأ)", nameEn:"Cell Structure (T/F)", originalName:"الخلية وبنيتها", questions:SECTION1_TF},
+  {name:"الأنسجة (اختياري)", nameEn:"Tissues (MCQ)", originalName:"الأنسجة", questions:SECTION2_MCQ},
+  {name:"الأنسجة (صواب/خطأ)", nameEn:"Tissues (T/F)", originalName:"الأنسجة", questions:SECTION2_TF},
+  {name:"الجهاز الغدي الصماء (اختياري)", nameEn:"Endocrine System (MCQ)", originalName:"الجهاز الغدي الصماء", questions:SECTION3_MCQ},
+  {name:"الجهاز الغدي الصماء (صواب/خطأ)", nameEn:"Endocrine System (T/F)", originalName:"الجهاز الغدي الصماء", questions:SECTION3_TF},
+  {name:"أسئلة إضافية (اختياري)", nameEn:"Additional Questions (MCQ)", originalName:"أسئلة إضافية", questions:SECTION4_MCQ},
+  {name:"أسئلة الإكمال (اختياري)", nameEn:"Complete Questions (MCQ)", originalName:"أسئلة الإكمال", questions:SECTION5_MCQ},
+  {name:"أسئلة المطابقة (اختياري)", nameEn:"Match Questions (MCQ)", originalName:"أسئلة المطابقة", questions:SECTION6_MCQ}
+];
+
+// ======================================================================
+// دوال التطبيق
+// ======================================================================
+const LS_KEY='biology_progress_v7';
+let state={
+  mode:'practice', order:'device', showTranslation:true, timerSeconds:0,
+  quizQuestions:[], currentIndex:0, correctCount:0, wrongCount:0,
+  answered:false, selectedOptionIdx:null, sessionMistakes:[],
+  timerInterval:null, timeLeft:0, questionStates:[]
+};
+let maleEnglishVoice=null, currentExplainLang='ar', currentExplainName='';
+
+function setTheme(t){document.body.classList.toggle('light',t==='light');document.querySelectorAll('.theme-toggle button').forEach(b=>{b.classList.toggle('active',b.dataset.theme===t)});localStorage.setItem('biology_theme',t)}
+function loadProgress(){try{const r=localStorage.getItem(LS_KEY);if(!r)return{attempted:{},mistakes:{}};return JSON.parse(r)}catch(e){return{attempted:{},mistakes:{}}}}
+function saveProgress(p){localStorage.setItem(LS_KEY,JSON.stringify(p))}
+function qid(s,n){return s+'___'+n}
+
+function showExplanation(name){
+  currentExplainName=name;
+  const box=document.getElementById('section-explanation');
+  const title=document.getElementById('explain-title');
+  const textDiv=document.getElementById('explain-text');
+  const data={
+    "الخلية وبنيتها":{text_ar:"بنية الخلية: غشاء خلوي، نواة، عضيات (ميتوكوندريا، شبكة إندوبلازمية، جهاز جولجي، ريبوسومات، لايسوسومات). الأنسجة: ظهارية، ضامة، عضلية، عصبية.",text_en:"Cell structure: cell membrane, nucleus, organelles (mitochondria, ER, Golgi, ribosomes, lysosomes). Tissues: epithelial, connective, muscle, nervous."},
+    "الأنسجة":{text_ar:"الأنسجة: ظهارية (تبطن الأسطح)، ضامة (تدعم وتربط)، عضلية (للحركة)، عصبية (للإشارات). الأنسجة الضامة: هيكلية، وعائية، دهنية.",text_en:"Tissues: epithelial (surfaces), connective (support/connect), muscle (movement), nervous (signals)."},
+    "الجهاز الغدي الصماء":{text_ar:"الجهاز الصماء: غدد تفرز هرمونات في الدم. الغدة النخامية (الرئيسية)، الدرقية، الكظرية، البنكرياس.",text_en:"Endocrine system: glands secrete hormones into blood. Pituitary (master), thyroid, adrenal, pancreas."},
+    "أسئلة إضافية":{text_ar:"أسئلة إضافية: النقل النشط، الإخراج الخلوي، جهاز جولجي، الانتشار الميسر، الجليكوكاليكس، الميتوكوندريا، اللايسوسوم الثانوي.",text_en:"Additional questions: active transport, exocytosis, Golgi, facilitated diffusion, glycocalyx."},
+    "أسئلة الإكمال":{text_ar:"أسئلة الإكمال: الغدد الصماء، النسيج، الخلايا العمادية، النسيج الظهاري، البروتين المحيطي، الغلاف النووي، البلعمة، الريبوسومات، الجلد.",text_en:"Complete questions: endocrine glands, tissue, columnar cells, epithelial tissue, peripheral protein."},
+    "أسئلة المطابقة":{text_ar:"أسئلة المطابقة: الشبكة الإندوبلازمية الملساء (الدهون)، النسيج الضام (العزل الحراري)، الظهارة الحرشفية البسيطة (الأوعية الدموية).",text_en:"Match questions: Smooth ER (lipids), connective tissue (thermal insulation), simple squamous (blood vessels)."}
+  };
+  const d=data[name];
+  title.textContent=name;
+  if(!d){textDiv.textContent=currentExplainLang==='ar'?'لا يوجد شرح':'No explanation.';box.classList.add('show');updateExplainTextClass();return;}
+  const txt=currentExplainLang==='ar'?d.text_ar:d.text_en;
+  textDiv.innerHTML=txt.replace(/\n/g,'<br>');
+  updateExplainTextClass();
+  box.classList.add('show');
+}
+function updateExplainTextClass(){const t=document.getElementById('explain-text');t.classList.remove('ar','en');t.classList.add(currentExplainLang);}
+function closeExplanation(){document.getElementById('section-explanation').classList.remove('show');}
+function setExplainLang(l){currentExplainLang=l;document.querySelectorAll('.explain-controls .lang-btn').forEach(b=>{b.classList.toggle('active',b.dataset.lang===l)});if(currentExplainName)showExplanation(currentExplainName);}
+function updateHomeStats(){const p=loadProgress(),keys=Object.keys(p.attempted||{});let c=0,w=0;keys.forEach(k=>{if(p.attempted[k]==='correct')c++;else w++});const total=keys.length,pct=total?Math.round((c/total)*100):0;document.getElementById('statAttempted').textContent=total;document.getElementById('statCorrect').textContent=c;document.getElementById('statWrong').textContent=w;document.getElementById('progressPercent').innerHTML=pct+'<small>%</small>';const circle=document.getElementById('progressCircle'),circ=176;circle.style.strokeDashoffset=circ-(pct/100)*circ;updateWeakSectionSuggestion(p);}
+function updateWeakSectionSuggestion(p){const att=p.attempted||{};let bestIdx=-1,bestRate=0,bestName='';QUESTION_BANK.forEach((sec,idx)=>{let a=0,w=0;sec.questions.forEach(q=>{const k=qid(sec.name,q.num);if(att[k]!==undefined){a++;if(att[k]==='wrong')w++}});if(a>=2){const rate=w/a;if(rate>bestRate){bestRate=rate;bestIdx=idx;bestName=sec.name}}});const link=document.getElementById('weakLink');if(bestIdx>=0&&bestRate>0){link.style.display='flex';document.getElementById('weakSectionName').textContent=bestName;document.getElementById('weakSectionRate').textContent=Math.round(bestRate*100)+'%';link.dataset.sectionIdx=bestIdx;}else link.style.display='none';}
+function buildSectionList(){const wrap=document.getElementById('section-list');wrap.innerHTML='';QUESTION_BANK.forEach((sec,idx)=>{const div=document.createElement('div');div.className='section-item active';div.dataset.idx=idx;const nameSpan=document.createElement('span');nameSpan.textContent=sec.nameEn;const infoBtn=document.createElement('button');infoBtn.className='info-btn';infoBtn.innerHTML='<i class="fas fa-info-circle"></i>';infoBtn.title="شرح القسم";infoBtn.onclick=(e)=>{e.stopPropagation();showExplanation(sec.originalName)};const cntSpan=document.createElement('span');cntSpan.className='cnt';cntSpan.textContent=sec.questions.length;div.appendChild(nameSpan);div.appendChild(infoBtn);div.appendChild(cntSpan);div.onclick=()=>{div.classList.toggle('active');updateToggleAllButton();};wrap.appendChild(div)});updateToggleAllButton();}
+function toggleAllSections(){const items=document.querySelectorAll('#section-list .section-item');const activeCount=document.querySelectorAll('#section-list .section-item.active').length;const allSelected=activeCount===items.length;items.forEach(el=>{el.classList.toggle('active',!allSelected);});updateToggleAllButton();}
+function updateToggleAllButton(){const items=document.querySelectorAll('#section-list .section-item');const activeCount=document.querySelectorAll('#section-list .section-item.active').length;const btn=document.getElementById('toggleAllBtn');if(activeCount===items.length&&items.length>0){btn.textContent='إلغاء الكل';}else{btn.textContent='تحديد الكل';}}
+function toggleOptions(t){document.querySelectorAll('.sub-options').forEach(e=>e.classList.remove('show'));const target=document.getElementById(t);if(target)target.classList.add('show');document.querySelectorAll('.action-icon').forEach(e=>e.classList.remove('active'));const activeIcon=document.querySelector(`.action-icon[data-target="${t}"]`);if(activeIcon)activeIcon.classList.add('active');}
+function closeAllOptions(){document.querySelectorAll('.sub-options').forEach(e=>e.classList.remove('show'));document.querySelectorAll('.action-icon').forEach(e=>e.classList.remove('active'));const def=document.querySelector('.action-icon[data-target="modeOptions"]');if(def)def.classList.add('active');}
+function selectMode(m){state.mode=m;document.querySelectorAll('#modeOptions .action-btn').forEach(e=>{e.classList.toggle('active',e.dataset.mode===m)});closeAllOptions();}
+function selectOrder(o){state.order=o;document.querySelectorAll('#orderOptions .action-btn').forEach(e=>{e.classList.toggle('active',e.dataset.order===o)});closeAllOptions();}
+function selectTranslate(t){state.showTranslation=(t==='yes');document.querySelectorAll('#langOptions .action-btn').forEach(e=>{e.classList.toggle('active',e.dataset.translate===t)});closeAllOptions();}
+function selectTimer(s){state.timerSeconds=s;document.querySelectorAll('#timerOptions .action-btn').forEach(e=>{e.classList.toggle('active',parseInt(e.dataset.timer)===s)});closeAllOptions();}
+function enterApp(){document.getElementById('main-screen').style.display='block';buildSectionList();updateHomeStats();const savedTheme=localStorage.getItem('biology_theme')||'dark';setTheme(savedTheme);if(window.speechSynthesis){window.speechSynthesis.getVoices();window.speechSynthesis.onvoiceschanged=()=>{window.speechSynthesis.getVoices();maleEnglishVoice=null;}}}
+function goHome(){stopTimer();document.getElementById('screen-quiz').classList.remove('active');document.getElementById('screen-results').classList.remove('active');document.getElementById('main-screen').style.display='block';updateHomeStats();}
+function quitQuiz(){if(confirm('متأكد تخرج؟')){stopTimer();goHome();}}
+function resetProgress(){if(confirm('متأكد تصفير التقدم؟')){localStorage.removeItem(LS_KEY);updateHomeStats();}}
+function shuffleArray(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a;}
+function startQuiz(){const activeEls=document.querySelectorAll('#section-list .section-item.active');if(activeEls.length===0){alert('اختار جزء واحد على الأقل!');return;}const idxs=Array.from(activeEls).map(el=>parseInt(el.dataset.idx));let qs=[];idxs.forEach(idx=>{const sec=QUESTION_BANK[idx];sec.questions.forEach(q=>{qs.push(Object.assign({},q,{sectionName:sec.name}));});});if(qs.length===0){alert('هذا القسم لا يحتوي على أسئلة!');return;}if(state.order==='random')qs=shuffleArray(qs);state.quizQuestions=qs;state.currentIndex=0;state.correctCount=0;state.wrongCount=0;state.sessionMistakes=[];state.questionStates=qs.map(()=>({selectedOption:null,answered:false,isCorrect:false,chosenIdxs:[]}));document.getElementById('main-screen').style.display='none';document.getElementById('screen-quiz').classList.add('active');document.getElementById('screen-results').classList.remove('active');renderQuestion();}
+function reviewMistakes(){const p=loadProgress();const mistakeKeys=Object.keys(p.mistakes||{});if(mistakeKeys.length===0){alert('مفيش أخطاء للمراجعة');return;}let qs=[];QUESTION_BANK.forEach(sec=>{sec.questions.forEach(q=>{const k=qid(sec.name,q.num);if(mistakeKeys.includes(k))qs.push(Object.assign({},q,{sectionName:sec.name}));});});state.quizQuestions=qs;state.currentIndex=0;state.correctCount=0;state.wrongCount=0;state.sessionMistakes=[];state.mode='practice';state.questionStates=qs.map(()=>({selectedOption:null,answered:false,isCorrect:false,chosenIdxs:[]}));document.getElementById('main-screen').style.display='none';document.getElementById('screen-quiz').classList.add('active');document.getElementById('screen-results').classList.remove('active');renderQuestion();}
+function startWeakSectionQuiz(){const link=document.getElementById('weakLink');const idx=link.dataset.sectionIdx;if(idx===undefined)return;document.querySelectorAll('#section-list .section-item').forEach(el=>{el.classList.toggle('active',el.dataset.idx==idx)});startQuiz();}
+function renderQuestion(){
+  const idx=state.currentIndex, q=state.quizQuestions[idx], st=state.questionStates[idx];
+  state.answered=st.answered; state.selectedOptionIdx=st.selectedOption;
+  const total=state.quizQuestions.length;
+  document.getElementById('quiz-position').innerHTML='<i class="fas fa-question-circle"></i> '+(idx+1)+' / '+total;
+  document.getElementById('quiz-score').innerHTML='<i class="fas fa-check-circle" style="color:var(--success);"></i> '+state.correctCount+' <i class="fas fa-times-circle" style="color:var(--danger);margin-right:6px;"></i> '+state.wrongCount;
+  document.getElementById('progress-bar').style.width=((idx)/total*100)+'%';
+  let tagText='<i class="fas fa-tag"></i> '+q.sectionName;if(q.isTF)tagText+=' <span class="tf-badge">صواب / خطأ</span>';document.getElementById('q-section-tag').innerHTML=tagText;
+  const qEn=document.getElementById('q-en');wrapEnglishText(q.num+'. '+q.en,qEn);
+  const qAr=document.getElementById('q-ar');qAr.textContent=q.ar||'';qAr.style.display=state.showTranslation&&q.ar?'block':'none';
+  const opts=document.getElementById('options');opts.innerHTML='';
+  if(q.isTF){
+    [{en:"True",ar:"صواب"},{en:"False",ar:"خطأ"}].forEach((opt,i)=>{
+      const div=document.createElement('div');div.className='option';div.dataset.idx=i;
+      const isCorrect=(i===0)?q.correct===true:q.correct===false;
+      div.dataset.correct=isCorrect?'true':'false';
+      const enDiv=document.createElement('div');enDiv.className='opt-en';wrapEnglishText(opt.en,enDiv);
+      const arDiv=document.createElement('div');arDiv.className='opt-ar';arDiv.textContent=opt.ar||'';arDiv.style.display=state.showTranslation&&opt.ar?'block':'none';
+      const mark=document.createElement('span');mark.className='mark';
+      div.appendChild(enDiv);div.appendChild(arDiv);div.appendChild(mark);
+      div.onclick=()=>onOptionClick(i);
+      opts.appendChild(div);
+    });
+  } else {
+    q.options.forEach((opt,i)=>{
+      const div=document.createElement('div');div.className='option';div.dataset.idx=i;div.dataset.correct=opt.correct?'true':'false';
+      const enDiv=document.createElement('div');enDiv.className='opt-en';wrapEnglishText(opt.en,enDiv);
+      const arDiv=document.createElement('div');arDiv.className='opt-ar';arDiv.textContent=opt.ar||'';arDiv.style.display=state.showTranslation&&opt.ar?'block':'none';
+      const mark=document.createElement('span');mark.className='mark';
+      div.appendChild(enDiv);div.appendChild(arDiv);div.appendChild(mark);
+      div.onclick=()=>onOptionClick(i);
+      opts.appendChild(div);
+    });
+  }
+  if(st.answered){
+    const chosenIdxs=st.chosenIdxs;
+    document.querySelectorAll('.option').forEach(el=>{
+      const idxOpt=parseInt(el.dataset.idx);
+      el.classList.add('disabled');
+      const isCorrectOption=el.dataset.correct==='true';
+      if(isCorrectOption){el.classList.add('correct');el.querySelector('.mark').textContent='✅';}
+      else if(chosenIdxs.includes(idxOpt)){el.classList.add('wrong');el.querySelector('.mark').textContent='❌';}
+      if(st.selectedOption===idxOpt)el.classList.add('selected');
+    });
+    const fb=document.getElementById('feedback');
+    fb.classList.remove('hidden');
+    fb.className='feedback-box '+(st.isCorrect?'correct':'wrong');
+    let correctLabels='';
+    if(q.isTF){correctLabels=q.correct?'True (صواب)':'False (خطأ)';}else{correctLabels=q.options.map((o,i)=>o.correct?o.en:null).filter(Boolean).join('، ');}
+    fb.innerHTML='<div class="fb-title">'+(st.isCorrect?'✅ صحيحة!':'❌ غلط')+'</div>'+(st.isCorrect?'':'<div><b>الصح:</b> '+correctLabels+'</div>')+'<div class="fb-explain">💡 '+(q.explain_ar||'')+'</div>';
+  } else {
+    document.getElementById('feedback').classList.add('hidden');
+    document.getElementById('feedback').innerHTML='';
+  }
+  const nextBtn=document.getElementById('btn-next');const prevBtn=document.getElementById('btn-prev');
+  prevBtn.disabled=(idx===0);
+  const isLast=idx===total-1;
+  const finishLabel=isLast?'إنهاء ✅':'التالي ⬅️';
+  if (state.mode === 'test') {
+    nextBtn.disabled = (state.selectedOptionIdx === null);
+    nextBtn.innerHTML = '<i class="fas fa-arrow-left"></i> '+finishLabel;
+    nextBtn.onclick = () => { stopTimer(); nextQuestion(); };
+  } else {
+    nextBtn.disabled = false;
+    nextBtn.innerHTML = isLast?'<i class="fas fa-flag-checkered"></i> إنهاء':'<i class="fas fa-arrow-left"></i> التالي';
+    nextBtn.onclick = () => { if (!st.answered) return; stopTimer(); nextQuestion(); };
+  }
+  if(!st.answered) startTimer(); else stopTimer();
+}
+function onOptionClick(i){
+  if(state.answered)return;
+  state.selectedOptionIdx=i;
+  document.querySelectorAll('.option').forEach(el=>el.classList.remove('selected'));
+  document.querySelector('.option[data-idx="'+i+'"]').classList.add('selected');
+  if(state.mode==='test'){
+    document.getElementById('btn-next').disabled = false;
+  } else {
+    submitSingleAnswer(i);
+  }
+}
+function submitSingleAnswer(i){
+  const q=state.quizQuestions[state.currentIndex];
+  let isCorrect=false;
+  if(q.isTF){const opt=document.querySelector('.option[data-idx="'+i+'"]');isCorrect=opt.dataset.correct==='true';}
+  else{isCorrect=!!q.options[i].correct;}
+  finalizeAnswer(isCorrect,[i]);
+}
+function finalizeAnswer(isCorrect,chosenIdxs){
+  stopTimer();
+  state.answered=true;
+  const idx=state.currentIndex, st=state.questionStates[idx];
+  st.selectedOption=state.selectedOptionIdx;
+  st.answered=true;
+  st.isCorrect=isCorrect;
+  st.chosenIdxs=chosenIdxs;
+  const q=state.quizQuestions[idx];
+  if(isCorrect)state.correctCount++;
+  else state.wrongCount++;
+  const p=loadProgress();const key=qid(q.sectionName,q.num);
+  p.attempted=p.attempted||{};p.mistakes=p.mistakes||{};
+  p.attempted[key]=isCorrect?'correct':'wrong';
+  if(isCorrect){delete p.mistakes[key];}else{p.mistakes[key]=true;}
+  saveProgress(p);
+  if(!isCorrect){state.sessionMistakes.push({q,chosenIdxs});}
+  renderQuestion();
+}
+function previousQuestion(){
+  if(state.currentIndex>0){
+    state.currentIndex--;
+    renderQuestion();
+  }
+}
+function nextQuestion(){
+  const st = state.questionStates[state.currentIndex];
+  if (state.mode === 'practice' && !st.answered) {
+    return;
+  }
+  if (state.mode === 'test' && state.selectedOptionIdx === null) {
+    return;
+  }
+  if (!st.answered) {
+    const q = state.quizQuestions[state.currentIndex];
+    let isCorrect = false, chosenIdxs = [];
+    if (state.selectedOptionIdx !== null) {
+      if (q.isTF) {
+        const opt = document.querySelector('.option[data-idx="'+state.selectedOptionIdx+'"]');
+        isCorrect = opt ? opt.dataset.correct === 'true' : false;
+      } else {
+        isCorrect = q.options[state.selectedOptionIdx].correct;
+      }
+      chosenIdxs = [state.selectedOptionIdx];
+    } else {
+      isCorrect = false;
+      chosenIdxs = [];
+    }
+    finalizeAnswer(isCorrect, chosenIdxs);
+  }
+  if (state.currentIndex < state.quizQuestions.length - 1) {
+    state.currentIndex++;
+    renderQuestion();
+  } else {
+    showResults();
+  }
+}
+function showResults(){
+  stopTimer();
+  document.getElementById('screen-quiz').classList.remove('active');
+  document.getElementById('screen-results').classList.add('active');
+  document.getElementById('mistakes-list-wrap').classList.add('hidden');
+  const total=state.quizQuestions.length,pct=total?Math.round((state.correctCount/total)*100):0;
+  document.getElementById('result-pct').textContent=pct+'%';
+  document.getElementById('score-circle').style.setProperty('--pct',pct);
+  document.getElementById('res-total').textContent=total;
+  document.getElementById('res-correct').textContent=state.correctCount;
+  document.getElementById('res-wrong').textContent=state.wrongCount;
+  const btnMistakes=document.getElementById('btn-show-mistakes');
+  if(state.sessionMistakes.length>0)btnMistakes.classList.remove('hidden');else btnMistakes.classList.add('hidden');
+}
+function showMistakesList(){const wrap=document.getElementById('mistakes-list-wrap'),list=document.getElementById('mistakes-list');list.innerHTML='';state.sessionMistakes.forEach(m=>{const q=m.q;let yourAnswers='',correctAnswers='';if(q.isTF){yourAnswers=m.chosenIdxs.map(i=>document.querySelector('.option[data-idx="'+i+'"] .opt-en')?.textContent||'').join('، ');correctAnswers=q.correct?'True (صواب)':'False (خطأ)';}else{yourAnswers=m.chosenIdxs.map(i=>q.options[i].en).join('، ');correctAnswers=q.options.map((o,i)=>o.correct?o.en:null).filter(Boolean).join('، ');}const div=document.createElement('div');div.className='mistake-item';const toggleBtn=document.createElement('button');toggleBtn.className='mistake-toggle';toggleBtn.innerHTML='<i class="fas fa-eye"></i> عرض السؤال';const detailDiv=document.createElement('div');detailDiv.className='mistake-detail';detailDiv.style.display='none';const qHeader=document.createElement('div');qHeader.style.fontWeight='bold';qHeader.style.marginBottom='8px';qHeader.textContent=q.num+'. '+q.en;detailDiv.appendChild(qHeader);const optsDiv=document.createElement('div');if(q.isTF){[{en:"True (صواب)",correct:q.correct===true},{en:"False (خطأ)",correct:q.correct===false}].forEach((opt,i)=>{const row=document.createElement('div');row.className='opt-row';const label=document.createElement('span');label.className='opt-label';label.textContent=opt.en;const status=document.createElement('span');status.className='opt-status';if(opt.correct){status.textContent='✅';status.style.color='var(--success)';}else if(m.chosenIdxs.includes(i)){status.textContent='❌';status.style.color='var(--danger)';}else{status.textContent='—';status.style.color='var(--muted)';}row.appendChild(label);row.appendChild(status);optsDiv.appendChild(row)});}else{q.options.forEach((opt,i)=>{const row=document.createElement('div');row.className='opt-row';const label=document.createElement('span');label.className='opt-label';label.textContent=opt.en;const status=document.createElement('span');status.className='opt-status';if(opt.correct){status.textContent='✅';status.style.color='var(--success)';}else if(m.chosenIdxs.includes(i)){status.textContent='❌';status.style.color='var(--danger)';}else{status.textContent='—';status.style.color='var(--muted)';}row.appendChild(label);row.appendChild(status);optsDiv.appendChild(row)});}detailDiv.appendChild(optsDiv);const explainDiv=document.createElement('div');explainDiv.style.marginTop='8px';explainDiv.style.fontStyle='italic';explainDiv.style.color='var(--muted)';explainDiv.textContent='💡 '+(q.explain_ar||'');detailDiv.appendChild(explainDiv);toggleBtn.onclick=()=>{const vis=detailDiv.style.display!=='none';detailDiv.style.display=vis?'none':'block';toggleBtn.innerHTML=vis?'<i class="fas fa-eye"></i> عرض السؤال':'<i class="fas fa-eye-slash"></i> إخفاء السؤال';};div.innerHTML='<div class="m-q">'+q.num+'. '+q.en+'</div><div class="m-you">إجابتك: '+yourAnswers+'</div><div class="m-correct">الصح: '+correctAnswers+'</div>';div.appendChild(toggleBtn);div.appendChild(detailDiv);list.appendChild(div);});wrap.classList.remove('hidden');wrap.scrollIntoView({behavior:'smooth'});}
+function stopTimer(){if(state.timerInterval){clearInterval(state.timerInterval);state.timerInterval=null;}const b=document.getElementById('timer-badge');b.classList.add('hidden');b.classList.remove('warn','danger');}
+function startTimer(){stopTimer();if(!state.timerSeconds||state.timerSeconds<=0)return;const badge=document.getElementById('timer-badge');state.timeLeft=state.timerSeconds;badge.classList.remove('hidden','warn','danger');badge.innerHTML='<i class="fas fa-hourglass-half"></i> '+state.timeLeft;state.timerInterval=setInterval(()=>{state.timeLeft--;if(state.timeLeft<=0){badge.innerHTML='<i class="fas fa-hourglass-end"></i> 0';stopTimer();onTimeUp();return;}badge.innerHTML='<i class="fas fa-hourglass-half"></i> '+state.timeLeft;badge.classList.toggle('warn',state.timeLeft<=3&&state.timeLeft>1);badge.classList.toggle('danger',state.timeLeft<=1);},1000);}
+function onTimeUp(){if(state.answered)return;const q=state.quizQuestions[state.currentIndex];const chosen=state.selectedOptionIdx!==null?[state.selectedOptionIdx]:[];finalizeAnswer(false,chosen);}
+function getMaleEnglishVoice(){if(maleEnglishVoice)return maleEnglishVoice;const voices=window.speechSynthesis.getVoices();let v=voices.find(v=>v.lang==='en-US'&&v.name.toLowerCase().includes('male'));if(!v)v=voices.find(v=>v.lang==='en-GB'&&v.name.toLowerCase().includes('male'));if(!v)v=voices.find(v=>v.lang.startsWith('en')&&v.name.toLowerCase().includes('male'));if(!v)v=voices.find(v=>v.lang.startsWith('en'));maleEnglishVoice=v;return v;}
+function speakWord(word){if(!window.speechSynthesis)return;window.speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(word);u.lang='en-US';u.rate=.7;u.pitch=1;u.volume=1;const v=getMaleEnglishVoice();if(v)u.voice=v;window.speechSynthesis.speak(u);}
+function wrapEnglishText(text,container){if(!container)return;container.innerHTML='';if(!text)return;const words=text.split(' ');words.forEach((word,idx)=>{if(word.trim()===''){container.appendChild(document.createTextNode(' '));return;}const span=document.createElement('span');span.className='word-en';span.textContent=word;let pressTimer=null;const startPress=()=>{pressTimer=setTimeout(()=>{speakWord(word);span.classList.add('speaking');setTimeout(()=>span.classList.remove('speaking'),600);const hint=document.getElementById('speech-hint');hint.textContent='🔊 '+word;hint.classList.add('show');setTimeout(()=>hint.classList.remove('show'),1000);},1000);};const endPress=()=>{if(pressTimer){clearTimeout(pressTimer);pressTimer=null;}};span.addEventListener('pointerdown',startPress);span.addEventListener('pointerup',endPress);span.addEventListener('pointerleave',endPress);span.addEventListener('touchstart',startPress,{passive:true});span.addEventListener('touchend',endPress,{passive:true});span.addEventListener('touchcancel',endPress,{passive:true});container.appendChild(span);if(idx<words.length-1)container.appendChild(document.createTextNode(' '));});}
+document.addEventListener('click',function(e){const btn=e.target.closest('.big-btn');if(!btn)return;const rect=btn.getBoundingClientRect();const ripple=document.createElement('span');ripple.className='ripple';const size=Math.max(rect.width,rect.height);ripple.style.width=ripple.style.height=size+'px';ripple.style.left=(e.clientX-rect.left-size/2)+'px';ripple.style.top=(e.clientY-rect.top-size/2)+'px';btn.appendChild(ripple);setTimeout(()=>ripple.remove(),500);});
+
+// ======================================================================
+// تشغيل التطبيق
+// ======================================================================
+document.addEventListener('DOMContentLoaded', () => {
+  enterApp();
+});
+</script>
+</body>
+</html>
